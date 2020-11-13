@@ -1,0 +1,31 @@
+import { Injectable } from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
+import {environment} from "../../environments/environment";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class StockDataService {
+
+  constructor(private http: HttpClient) { }
+
+  getShopData(name: string): Observable<any> {
+    return this.http.post(`${environment.apiBaseUrl}shops/id`, name);
+  }
+
+  /** Open the desired Shop */
+  openShop(stockData: any, shopId: number): Observable<any> {
+    return this.http.post(`${environment.apiBaseUrl}shops/open/${shopId}`, stockData);
+  }
+
+  /** Gets the days stock based on the date */
+  getDaysStock(shopId: number, date: string): Observable<any> {
+    return this.http.post(`${environment.apiBaseUrl}shops/stock/${shopId}`, {date});
+  }
+
+  /** an attempt to close the desired shop */
+  closeShop(shopId: number, stockInfo: any): Observable<any> {
+    return this.http.post(`${environment.apiBaseUrl}shops/close/${shopId}`, {stocks: stockInfo});
+  }
+}
