@@ -36,15 +36,15 @@
           <th>Sub Total</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let product of stockProducts">
-          <td>{{product.name}}</td>
-          <td>Ksh. {{product.unitPrice}}</td>
-          <td>{{product.availableUnits}}</td>
-          <td>Ksh. {{(product.unitPrice * product.availableUnits).toLocaleString()}}</td>
-        </tr>
-      </tbody>
     </table>
+    <div class="table-data" style="max-height: 50vh">
+       <div class="table-data-item flexed" *ngFor="let prod of stockProducts">
+          <div class="item">{{prod.name}}</div>
+          <div class="item">{{prod.unitPrice}}</div>
+          <div class="item">{{prod.availableUnits}}</div>
+          <div class="item">Ksh. {{(prod.unitPrice * prod.availableUnits).toLocaleString()}}</div>
+        </div>
+    </div>
   </div>
 
   <div class="dialog-footer flexed flexed-justify-between mgy-2">

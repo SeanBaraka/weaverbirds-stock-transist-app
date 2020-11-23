@@ -83,15 +83,23 @@
             <th>Sub Total</th>
           </tr>
         </thead>
-        <tbody>
-          <tr *ngFor="let prod of stockProducts">
-            <td>{{prod.productName}}</td>
-            <td>Ksh. {{prod.unitPrice}}</td>
-            <td>{{prod.openingUnits}}</td>
-            <td>Ksh. {{(prod.unitPrice * prod.openingUnits).toLocaleString()}}</td>
-          </tr>
-        </tbody>
+<!--        <tbody>-->
+<!--          <tr *ngFor="let prod of stockProducts">-->
+<!--            <td>{{prod.productName}}</td>-->
+<!--            <td>Ksh. {{prod.unitPrice}}</td>-->
+<!--            <td>{{prod.openingUnits}}</td>-->
+<!--            <td>Ksh. {{(prod.unitPrice * prod.openingUnits).toLocaleString()}}</td>-->
+<!--          </tr>-->
+<!--        </tbody>-->
       </table>
+      <div class="table-data">
+        <div class="table-data-item flexed" *ngFor="let prod of stockProducts">
+          <div class="item">{{prod.productName}}</div>
+          <div class="item">{{prod.unitPrice}}</div>
+          <div class="item">{{prod.openingUnits}}</div>
+          <div class="item">{{(prod.unitPrice * prod.openingUnits).toLocaleString()}}</div>
+        </div>
+      </div>
       <table class="app-table">
         <tbody>
           <tr>

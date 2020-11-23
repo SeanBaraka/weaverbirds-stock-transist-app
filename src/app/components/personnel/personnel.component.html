@@ -1,0 +1,71 @@
+<div class="body-container">
+   <h3 class="main-heading">Driver and Personnel Management</h3>
+  <div class="product-add-form">
+    <form [formGroup]="personnelForm" (ngSubmit)="addPersonnel()" class="form">
+      <div class="form-controls mgy-1">
+        <label for="firstName">Personal Details</label>
+        <div class="flexed mgy-1" style="width: 70%">
+           <div class="form-input">
+             <label for="idNumber">National Identification Number</label>
+             <input type="text" class="" formControlName="idNumber" placeholder="12345676" id="idNumber">
+          </div>
+        </div>
+        <div class="flexed mgy-1">
+           <div class="form-input">
+             <label for="firstName">First Name</label>
+             <input type="text" class="" formControlName="firstName" placeholder="First Name" id="firstName">
+          </div>
+           <div class="form-input mgl-1">
+             <label for="lastName">Surname</label>
+             <input type="text" class="" formControlName="lastName" placeholder="First Name" id="lastName">
+          </div>
+          <div class="form-input mgl-1">
+            <label for="role">Select Personnel Role</label>
+              <input type="text" class="" list="roles" formControlName="role" placeholder="driver/turnboy" id="role">
+              <datalist id="roles">
+                <option value="driver">Driver</option>
+                <option value="dassistant">Turn Boy/Driver Assistant</option>
+              </datalist>
+          </div>
+        </div>
+        <div class="form-button mgy-2">
+          <button class="btn button-primary" type="submit" [class.disabled]="personnelForm.invalid">
+            <div class="flexed">
+              <span>Hire Personnel</span>
+              <span>
+                <img src="assets/add.svg" width="16" alt="">
+              </span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="vehicle-list">
+    <h5 class="sub-heading">Available Personnel</h5>
+    <table class="app-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>ID Number</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+    </table>
+    <div class="table-data" style="max-height: 240px">
+       <div class="table-data-item flexed" *ngFor="let person of personnel;let index = index">
+         <div class="item">{{index + 1}}</div>
+          <div class="item">{{person.idNumber}}</div>
+          <div class="item">{{person.firstName}}</div>
+          <div class="item">{{person.lastName}}</div>
+          <div class="item">{{person.role}}</div>
+        </div>
+    </div>
+
+  </div>
+
+
+</div>

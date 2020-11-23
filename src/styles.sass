@@ -3,6 +3,11 @@
 
 @import "variables"
 
+::-webkit-scrollbar
+  width: 2px
+  &-thumb
+    background: darkgrey
+    border-radius: 100px
 *
   margin: 0
   padding: 0
@@ -103,6 +108,8 @@ button
   border-collapse: collapse
   margin-top: .75em
   font-size: 12px
+  width: 100%
+  position: relative
   @media print
     font-size: 10px
   text-align: left
@@ -124,6 +131,38 @@ button
       font-size: 12px
       padding: 1em 1.5em
 
+// card layout
+.card
+  padding: 1em 2em
+  border-radius: .5em
+  background: #ffffff
+  box-shadow: 0 0 .25em rgba(0,0,0,.15)
+  &.actionable
+    cursor: pointer
+    &:hover
+      box-shadow: 0 0 .5em rgba(0,0,0,.15)
+
+// Grid layout
+.grid
+  display: grid
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))
+  gap: 1em
+
+// Custom table data Idea from binance
+.table-data
+  width: 100%
+  position: relative
+  font-size: 12px
+  max-height: 160px
+  overflow: auto
+  overflow-x: hidden
+  &-item
+    width: 100%
+    justify-content: space-between
+    padding: .65em 1.5em
+    .item
+      width: 25%
+      text-align: left
 
 // Width layout settings
 .wd

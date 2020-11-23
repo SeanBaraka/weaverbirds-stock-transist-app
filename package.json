@@ -3,7 +3,13 @@
   "version": "0.0.0",
   "main": "appmain.js",
   "build": {
-    "appId": "com.weaverbird.stocks"
+    "appId": "com.weaverbird.stocks",
+    "linux": {
+      "icon": "src/assets/Logo.png"
+    },
+    "win": {
+      "icon": "app-logo.ico"
+    }
   },
   "scripts": {
     "ng": "ng",

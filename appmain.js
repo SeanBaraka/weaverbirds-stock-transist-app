@@ -22,11 +22,12 @@ function createWindow() {
   wind.once('ready-to-show', () => {
     wind.show()
   })
-  wind.loadURL(url.format({
-    pathname: path.join(__dirname, 'dist/weaver/index.html'),
-    protocol: 'file',
-    slashes: true
-  }))
+
+  const pathName = path.resolve('weaver/index.html') // production build
+  // const pathName = path.resolve('dist/weaver/index.html') // development machine
+  wind.loadFile(
+    pathName,
+  )
   wind.on('close', () => {
     wind = null
   })

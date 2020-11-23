@@ -12,6 +12,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDialogModule} from "@angular/material/dialog";
 import { OpenShopComponent } from './components/open-shop/open-shop.component';
 import { CloseShopComponent } from './components/close-shop/close-shop.component';
+import { ShopsAvailableComponent } from './components/shops-available/shops-available.component';
+import { VehicleRoutesComponent } from './components/vehicle-routes/vehicle-routes.component';
+import { PersonnelComponent } from './components/personnel/personnel.component';
+import { VehiclesComponent } from './components/vehicles/vehicles.component';
+import { AddDriverStockComponent } from './components/add-driver-stock/add-driver-stock.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +25,12 @@ import { CloseShopComponent } from './components/close-shop/close-shop.component
     StockManagementComponent,
     ProductsComponent,
     OpenShopComponent,
-    CloseShopComponent
+    CloseShopComponent,
+    ShopsAvailableComponent,
+    VehicleRoutesComponent,
+    PersonnelComponent,
+    VehiclesComponent,
+    AddDriverStockComponent
   ],
   imports: [
     BrowserModule,

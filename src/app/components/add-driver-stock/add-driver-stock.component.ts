@@ -1,7 +1,9 @@
-import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
-import {Product} from "../../interfaces/product";
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {VehicleService} from "../../services/vehicle.service";
+import {ProductsManagementService} from "../../services/products-management.service";
+import {Product} from "../../interfaces/product";
 import {StockDataService} from "../../services/stock-data.service";
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -9,51 +11,102 @@ import htmltopdf from 'html-to-pdfmake';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
-  selector: 'app-close-shop',
-  templateUrl: './close-shop.component.html',
-  styleUrls: ['./close-shop.component.sass']
+  selector: 'app-add-driver-stock',
+  templateUrl: './add-driver-stock.component.html',
+  styleUrls: ['./add-driver-stock.component.sass']
 })
-export class CloseShopComponent implements OnInit {
-  stockProducts: Array<Product> = [];
-  dayStockProducts: Array<Product> = [];
-  product: Product;
+export class AddDriverStockComponent implements OnInit {
+  // holds the driver and route assigned to a vehicle
+  driverRouteStockForm = this.fb.group({
+    driver: ['', Validators.required],
+    route: ['', Validators.required],
+    vehicle: [this.data.plateNumber]
+  });
+  drivers: any[] = [];
+  vroutes: any[] = [];
+  stockProducts: Product[] = [];
+  availableProducts: any[] = [];
 
-  @ViewChild('content') content: ElementRef;
+  // form adding stock to the vehicle
+  addStockForm = this.fb.group({
+    name: ['', Validators.required],
+    unitPrice: ['', Validators.required],
+    availableUnits: ['', Validators.required]
+  });
 
+  // Determines whether its okay to add stock to a vehicle or not.
+  // the vehicle first needs to have been assigned a driver and a route
+  // for this to be active
+  vehicleAssignedDriver = false;
 
-  constructor(private dialog: MatDialogRef<CloseShopComponent>,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               private fb: FormBuilder,
-              @Inject(MAT_DIALOG_DATA) public data: any,
+              private vehicleService: VehicleService,
+              private prodService: ProductsManagementService,
+              private dialog: MatDialogRef<AddDriverStockComponent>,
               private stockService: StockDataService) { }
 
-  closeStockForm = this.fb.group({
-    name: ['', Validators.required],
-    availableUnits: ['', Validators.required],
-    unitPrice: ['', Validators.required]
-  });
-  finished = false;
-
   ngOnInit(): void {
-    this.getDayStock();
+    this.getVehicleRoutes();
+    this.getVehicleDrivers();
+    this.getProducts();
   }
 
-  getDayStock(): void {
-    const shortDate = new Date(Date.now()).toISOString().split('T')[0];
+   getProducts(): void {
+    this.prodService.listProducts().subscribe((data: Product[]) => {
+      this.availableProducts = data;
+    });
+  }
 
-    this.stockService.getDaysStock(this.data.shopId, shortDate).subscribe((response) => {
-      this.dayStockProducts = response;
+  getVehicleDrivers(): void {
+    this.vehicleService.getDriversList().subscribe((data) => {
+      this.drivers = data;
+    });
+  }
+
+  getVehicleRoutes(): void {
+    this.vehicleService.getVehicleRoutes().subscribe((routes) => {
+      this.vroutes = routes;
+    });
+  }
+
+  // adds a driver to a vehicle,
+  addDriverVehicleRoute(): void {
+    if (this.driverRouteStockForm.valid) {
+      this.vehicleAssignedDriver = true;
+    }
+  }
+
+  dispatchVehicle(): void {
+    const dispatchInfo = {
+      vehicle: this.data.plateNumber,
+      // driver: this.driverRouteStockForm.get('driver').value,
+      // route: this.driverRouteStockForm.get('route').value,
+      stock: this.stockProducts
+    };
+    // first assign the driver to the vehicle officially. as well as
+    // the route expected to take
+    this.vehicleService.addDriverToVehicle(this.driverRouteStockForm.value).subscribe((rsp) => {
+      if (rsp) {
+        this.vehicleService.dispatchVehicle(dispatchInfo).subscribe((dispatchResponse) => {
+          if (dispatchResponse) {
+            // print dispatch report
+            this.printReport();
+            this.dialog.close(dispatchResponse);
+          }
+        });
+      }
     });
   }
 
   updateStock(): void {
+    this.stockProducts.push(this.addStockForm.value);
+    this.addStockForm.reset();
   }
 
-  closeShop(): void {
-    const html = htmltopdf(`${this.content.nativeElement.outerHTML}`, {
-          defaultStyles: {
-            table: ''
-          }
-        });
+
+  /** print the dispatch report */
+  printReport(): void {
     const documentDefinition = {
       content: [
          {
@@ -65,7 +118,7 @@ export class CloseShopComponent implements OnInit {
           width: 100
         },
         {
-          text: `Closing stock Report - Shop (${this.data.shopName})`,
+          text: `Vehicle Dispatch Report - Vehicle (${this.data.plateNumber})`,
           fontSize: 12,
           style: 'sectionHeader'
         },
@@ -73,6 +126,9 @@ export class CloseShopComponent implements OnInit {
           columns: [
             [
               { text: `Date - ${new Date(Date.now()).toLocaleDateString()}`, style: 'textRegular'},
+              { text: `Vehicle - ${this.data.plateNumber}`, style: 'textRegular'},
+              { text: `Driver - ${this.driverRouteStockForm.get('driver').value}`, style: 'textRegular'},
+              { text: `Transport Route - ${this.driverRouteStockForm.get('route').value}`, style: 'textRegular'},
               {text: 'Weaverbirds Limited', style: 'textRegular'},
               {text: 'P.O. Box 456-90100', style: 'textRegular'},
               {
@@ -93,7 +149,7 @@ export class CloseShopComponent implements OnInit {
         {
           table: {
             headerRows: 1,
-            widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+            widths: ['*', 'auto', 'auto', 'auto'],
             heights: (row) => {
               if (row === 0) {
                 return 0;
@@ -102,23 +158,22 @@ export class CloseShopComponent implements OnInit {
               }
             },
             body: [
-              ['Product Name', 'Unit Price', 'Opening Stock', 'Added Stock', 'Closing Stock', 'Items Sold', 'Sub Total'],
-              ...this.dayStockProducts.map((p => (
+              ['Product Name', 'Unit Price', 'Quantity', 'Sub Total'],
+              ...this.stockProducts.map((p => (
                 [
-                  p.productName, p.unitPrice, p.openingUnits, p.addedUnits,
-                  p.closingUnits, (p.openingUnits + p.addedUnits) - p.closingUnits,
-                  (p.unitPrice * ((p.openingUnits + p.addedUnits) - p.closingUnits)).toFixed(2)
+                  p.name, p.unitPrice, p.availableUnits,
+                  (p.unitPrice * p.availableUnits).toFixed(2)
                 ]))),
               [
                 {
-                  text: 'Total', fontSize: 8, bold: true, colspan: 6
-                }, {}, {}, {}, {}, {},
+                  text: 'Total', fontSize: 8, bold: true, colspan: 3
+                }, {}, {},
                 this.getStockTotalAmount().toFixed(2)
                 ]
             ]
           },
           layout: 'headerLineOnly',
-          fontSize: 7
+          fontSize: 8
         },
         {
           text: '',
@@ -129,8 +184,8 @@ export class CloseShopComponent implements OnInit {
             headerRows: 1,
             widths: ['auto', 'auto'],
             body: [
-              ['Total Items Sold:', this.getStockTotal()],
-              ['Total Sales:', `KSH. ${this.getStockTotalAmount().toLocaleString()}`]
+              ['Stock Carried:', this.getStockTotal()],
+              ['Stock Carried Total:', `KSH. ${this.getStockTotalAmount().toLocaleString()}`]
             ]
           },
           layout: 'noBorders',
@@ -147,11 +202,11 @@ export class CloseShopComponent implements OnInit {
             [
               {text: '', margin: [0, 10, 0, 10]},
               {
-                text: 'scan the QR to validate the sales records',
+                text: 'scan the QR to validate vehicle dispatch records',
                 style: 'textRegular'
               },
               {
-                qr: `total sales on ${new Date(Date.now()).toLocaleDateString()} were ${this.getStockTotalAmount()}`,
+                qr: `vehicle ${this.data.plateNumber} carrying ${this.getStockTotalAmount()} as at ${new Date(Date.now()).toLocaleDateString()}`,
                 fit: '50',
                 alignment: 'center'
               }
@@ -175,38 +230,24 @@ export class CloseShopComponent implements OnInit {
         }
       }
     };
-    // pdfMake.createPdf(documentDefinition).print();
-    this.stockService.closeShop(this.data.shopId, this.dayStockProducts).subscribe((resp) => {
-      if (resp) {
-        this.finished = true;
-        this.dialog.close('success'); // close the dialog
-        pdfMake.createPdf(documentDefinition).print(); // print the table data
-      }
-    });
+    pdfMake.createPdf(documentDefinition).print();
   }
 
-  updateStockRecord(index: number, changedValue: any): void {
-    this.dayStockProducts[index].closingUnits = changedValue;
-    this.dayStockProducts[index].soldUnits = this.dayStockProducts[index].openingUnits - this.dayStockProducts[index].closingUnits;
-  }
-
-  getStockTotal(): number {
-    const totalStock = [];
-    this.dayStockProducts.forEach((item) => {
-      totalStock.push(item.soldUnits);
-    });
-
-    return totalStock.reduce((a, b) => a + b , 0);
-  }
-
-  getStockTotalAmount(): number {
-
+  private getStockTotalAmount(): number {
     const totalAmount = [];
-    this.dayStockProducts.forEach((item) => {
-      totalAmount.push(item.soldUnits * item.unitPrice);
+    this.stockProducts.forEach((item) => {
+      totalAmount.push(item.availableUnits * item.unitPrice);
     });
 
     return totalAmount.reduce((a, b) => a + b , 0);
   }
 
+  private getStockTotal(): number {
+    const totalStock = [];
+    this.stockProducts.forEach((item) => {
+      totalStock.push(item.availableUnits);
+    });
+
+    return totalStock.reduce((a, b) => a + b , 0);
+  }
 }

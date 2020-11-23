@@ -58,6 +58,8 @@ export class StockManagementComponent implements OnInit {
     }).afterClosed().subscribe((data) => {
       if (data) {
         this.getShopStock();
+        this.shopOpen = !this.shopOpen;
+        this.shopClosed = !this.shopClosed;
       }
     });
   }
@@ -68,6 +70,12 @@ export class StockManagementComponent implements OnInit {
       height: '90vh',
       disableClose: true,
       data: {shopId: this.shopId, stockProducts: this.stockProducts, shopName: this.shopName}
+    }).afterClosed().subscribe((data) => {
+      if (data) {
+        this.getShopStock();
+        this.shopOpen = !this.shopOpen;
+        this.shopClosed = !this.shopClosed;
+      }
     });
   }
 

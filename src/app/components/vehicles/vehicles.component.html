@@ -1,0 +1,65 @@
+<div class="body-container">
+   <h3 class="main-heading">Vehicles Management</h3>
+  <div class="product-add-form">
+    <form [formGroup]="vehicleForm" (ngSubmit)="addVehicle()" class="form">
+      <div class="form-controls mgy-1">
+        <label for="plateNumber">Vehicle Plate Number</label>
+        <div class="form-input">
+          <input type="text" id="plateNumber" formControlName="plateNumber" placeholder="KCA 345D">
+        </div>
+        <div class="flexed mgy-1" style="width: 50%">
+          <div class="form-input">
+             <label for="model">Model Type</label>
+             <input type="text" class="" formControlName="modelType" placeholder="Toyota probox" id="model">
+          </div>
+        </div>
+        <div class="form-button mgy-2">
+          <button class="btn button-primary" type="submit" [class.disabled]="vehicleForm.invalid">
+            <div class="flexed">
+              <span>Add Vehicle</span>
+              <span>
+                <img src="assets/add.svg" width="16" alt="">
+              </span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="vehicle-list">
+    <h5 class="sub-heading">Available Vehicles</h5>
+    <div class="vehicles grid">
+      <div class="vehicle grid-item" *ngFor="let veh of vehicles" (click)="assignRouteDriver(veh.plateNumber)">
+        <div class="card actionable">
+          <h5 class="sub-heading">{{veh.plateNumber}}</h5>
+          <p class="mgy-1 smallest">{{veh.modelType}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="in-route-vehicles mgy-2">
+    <h5>Vehicles In Various Routes</h5>
+    <table class="app-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Vehicle</th>
+          <th>Driver</th>
+          <th>Route</th>
+        </tr>
+      </thead>
+    </table>
+    <div class="table-data" style="max-height: 200px">
+       <div class="table-data-item flexed" *ngFor="let vh of inRouteVehicles">
+          <div class="item">{{vh.date.split('T')[0]}}</div>
+          <div class="item">{{vh.vehicle}}</div>
+          <div class="item">{{vh.driver}}</div>
+          <div class="item">{{vh.route}}</div>
+        </div>
+    </div>
+  </div>
+
+
+</div>

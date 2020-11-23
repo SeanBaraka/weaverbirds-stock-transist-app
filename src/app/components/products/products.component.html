@@ -1,34 +1,39 @@
 <div class="body-container">
   <h3 class="main-heading">Products Management</h3>
-  <div class="product-add-form">
-    <form [formGroup]="productForm" (ngSubmit)="addProduct()" class="form">
-      <div class="form-controls mgy-1">
-        <label for="pname">Product Name</label>
-        <div class="form-input">
-          <input type="text" id="pname" formControlName="name" placeholder="Trace 200ml">
-        </div>
-        <div class="flexed mgy-1" style="width: 50%">
+  <div class="flexed flexed-justify-between">
+    <div class="product-add-form">
+      <form [formGroup]="productForm" (ngSubmit)="addProduct()" class="form">
+        <div class="form-controls mgy-1">
+          <label for="pname">Product Name</label>
           <div class="form-input">
-             <label for="price">Unit Price</label>
-             <input type="text" class="short" formControlName="unitPrice" placeholder="2,345" id="price">
+            <input type="text" id="pname" formControlName="name" placeholder="Trace 200ml">
           </div>
-          <div class="form-input">
-             <label for="qty">Unit Price</label>
-              <input type="number" min="1" class="shorter" formControlName="qty" placeholder="2" id="qty">
-          </div>
-        </div>
-        <div class="form-button mgy-2">
-          <button class="btn button-primary" type="submit" [class.disabled]="productForm.invalid">
-            <div class="flexed">
-              <span>Add Product</span>
-              <span>
-                <img src="assets/add.svg" width="16" alt="">
-              </span>
+          <div class="flexed mgy-1" style="width: 50%">
+            <div class="form-input">
+               <label for="price">Unit Price</label>
+               <input type="text" class="short" formControlName="unitPrice" placeholder="2,345" id="price">
             </div>
-          </button>
+            <div class="form-input mgl-1">
+               <label for="qty">Quantity</label>
+                <input type="number" min="1" class="shorter" formControlName="qty" placeholder="2" id="qty">
+            </div>
+          </div>
+          <div class="form-button mgy-2">
+            <button class="btn button-primary" type="submit" [class.disabled]="productForm.invalid">
+              <div class="flexed">
+                <span>Add Product</span>
+                <span>
+                  <img src="assets/add.svg" width="16" alt="">
+                </span>
+              </div>
+            </button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
+    <div class="sec-desc" style="padding: 1.5em 4em;opacity: 30%">
+      <img src="assets/delivery-box.svg" width="156" alt="">
+    </div>
   </div>
 
 <!--  Products Inventory section-->
@@ -43,15 +48,15 @@
           <th>Sub Total</th>
         </tr>
       </thead>
-      <tbody>
-        <tr  *ngFor="let product of products">
-          <td>{{product.name}}</td>
-          <td>Ksh. {{product.unitPrice.toLocaleString()}}</td>
-          <td>{{product.availableUnits}}</td>
-          <td>Ksh. {{(product.unitPrice * product.availableUnits).toLocaleString()}}</td>
-        </tr>
-      </tbody>
     </table>
+    <div class="table-data" style="max-height: 230px">
+       <div class="table-data-item flexed" *ngFor="let prod of products">
+          <div class="item">{{prod.name}}</div>
+          <div class="item">{{prod.unitPrice.toLocaleString()}}</div>
+          <div class="item">{{prod.availableUnits}}</div>
+          <div class="item">{{(prod.unitPrice * prod.availableUnits).toLocaleString()}}</div>
+        </div>
+    </div>
     <table class="app-table">
         <tbody>
           <tr>
