@@ -6,9 +6,11 @@ import {ShopsAvailableComponent} from "./components/shops-available/shops-availa
 import {VehiclesComponent} from "./components/vehicles/vehicles.component";
 import {PersonnelComponent} from "./components/personnel/personnel.component";
 import {VehicleRoutesComponent} from "./components/vehicle-routes/vehicle-routes.component";
+import {DashboardComponent} from "./components/dashboard/dashboard.component";
 
 const routes: Routes = [
-  { path: '', redirectTo: 'stock', pathMatch: 'full' },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: 'dashboard', component: DashboardComponent },
   { path: 'products', component: ProductsComponent },
   { path: 'stock', component: StockManagementComponent },
   { path: 'shops', component: ShopsAvailableComponent },

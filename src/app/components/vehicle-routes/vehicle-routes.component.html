@@ -30,8 +30,8 @@
 <div class="routes-list">
     <h5 class="sub-heading">Available Designated Routes</h5>
     <div class="routes grid">
-      <div class="route grid-item" *ngFor="let route of vehicleRoutes">
-        <div class="card actionable">
+      <div class="route grid-item" *ngFor="let route of vehicleRoutes;let index = index">
+        <div class="card actionable" [class.card-color-pri]="index%3 == 0" [class.card-color-main]="index%3 == 1" [class.card-color-sec]="index%3 == 2">
           <h5 class="sub-heading">{{route.name}}</h5>
           <p class="mgy-1 smallest">{{route.region}}</p>
         </div>

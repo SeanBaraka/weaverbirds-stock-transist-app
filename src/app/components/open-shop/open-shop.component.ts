@@ -12,10 +12,14 @@ import {StockDataService} from "../../services/stock-data.service";
 })
 export class OpenShopComponent implements OnInit {
 
-  constructor( private dialogRef: MatDialogRef<OpenShopComponent>, private stockService: StockDataService, private prodService: ProductsManagementService, private fb: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: any) { }
+  constructor( private dialogRef: MatDialogRef<OpenShopComponent>,
+               private stockService: StockDataService,
+               private prodService: ProductsManagementService,
+               private fb: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   stockProducts: Array<any> = [];
   availableProducts: Array<any> = [];
+  openingStock = 0;
 
   addStockForm = this.fb.group({
     name: ['', Validators.required],
@@ -36,6 +40,7 @@ export class OpenShopComponent implements OnInit {
 
   updateStock(): void {
     this.stockProducts.push(this.addStockForm.value);
+    this.openingStock = this.getOpeningStockTotal(this.stockProducts);
     this.addStockForm.reset();
   }
 
@@ -48,7 +53,7 @@ export class OpenShopComponent implements OnInit {
     });
   }
 
-  private getOpeningStockTotal(stockProducts: Array<Product>): any {
+  getOpeningStockTotal(stockProducts: Array<Product>): number {
     // get the openning stock values;
     const totalValuesArray = [];
     // tslint:disable-next-line:only-arrow-functions

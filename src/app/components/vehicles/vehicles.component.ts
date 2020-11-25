@@ -34,7 +34,6 @@ export class VehiclesComponent implements OnInit {
 
   getVehiclesInRoutes(): void {
     this.vehicleService.vehiclesInTransist().subscribe((data) => {
-      console.log(data)
       this.inRouteVehicles = data;
     });
   }

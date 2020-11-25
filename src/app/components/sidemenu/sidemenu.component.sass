@@ -1,8 +1,14 @@
+@import './src/variables'
+
 .nav-container
   margin: auto 0
-  height: 90vh
-
+  height: 85vh
   .nav-menu
+    h5
+      font-size: 10px
+      color: #888888
+      font-weight: 600
+      margin: 2em 0 0
     &-heading
       font-size: 0.825em
       margin: 1.25em 0
@@ -13,14 +19,14 @@
         padding: .5em 0
         font-size: 12px
         &.active
-          font-weight: 700
-          background: #fd008c
-          color: #fff
-          border-radius: 70px
-          padding: .5em 1.8em
-          margin: .95em -2em
-          display: inline-block
-          width: 90%
+          background: $blue-violet
+          color: #ffffff
+          border-top-right-radius: 20px
+          border-bottom-right-radius: 20px
+          padding: .5em 1.5em
+          margin: .95em -2.5em
+          width: 85%
+
           img
             filter: invert(100%)
         a

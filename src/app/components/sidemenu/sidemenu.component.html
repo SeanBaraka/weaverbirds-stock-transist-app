@@ -3,6 +3,17 @@
         <img src="assets/weaverlogo.svg" alt="">
     </div>
     <div class="nav-menu">
+        <h5>Dashboard</h5>
+        <ul class="nav-menu-links">
+           <li class="nav-menu-links-item" routerLinkActive="active">
+               <a [routerLink]="['dashboard']">
+                <div class="flexed flexed-inline">
+                    <img src="assets/dashboard.svg" width="19" alt="">
+                    <span>Reports & Summaries</span>
+                </div>
+               </a>
+            </li>
+        </ul>
         <h5 class="nav-menu-heading">Transist Management</h5>
         <ul class="nav-menu-links">
             <li class="nav-menu-links-item" routerLinkActive="active">
@@ -49,13 +60,34 @@
                 </a>
             </li>
             <li class="nav-menu-links-item" routerLinkActive="active">
-                <a [routerLink]="['stock']">
+                <a [routerLink]="['shops']">
                     <div class="flexed flexed-inline">
                         <img src="assets/store.svg" width="19" alt="">
                         <span>Available Shops</span>
                     </div>
                 </a>
             </li>
+        </ul>
+
+        <h5 class="nav-menu-heading">Human Resource Management</h5>
+        <ul class="nav-menu-links">
+            <li class="nav-menu-links-item" routerLinkActive="active">
+                <a>
+                    <div class="flexed flexed-inline">
+                        <img src="assets/group.svg" width="19" alt="">
+                        <span>Employees</span>
+                    </div>
+                </a>
+            </li>
+            <li class="nav-menu-links-item" routerLinkActive="active">
+                <a>
+                    <div class="flexed flexed-inline">
+                        <img src="assets/salary.svg" width="19" alt="">
+                        <span>Payroll</span>
+                    </div>
+                </a>
+            </li>
+
         </ul>
     </div>
     <div class="nav-footer">

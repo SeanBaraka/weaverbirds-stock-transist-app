@@ -1,1 +1,42 @@
-<p>shops-available works!</p>
+<div class="body-container">
+   <h3 class="main-heading">Available Shops</h3>
+  <div class="product-add-form">
+    <form [formGroup]="shopForm" (ngSubmit)="addShop()" class="form">
+      <div class="form-controls mgy-1">
+        <label for="shopName">Enter the Name of the Shop</label>
+        <div class="form-input">
+          <input type="text" id="shopName" formControlName="name" placeholder="Shop Name">
+        </div>
+        <div class="flexed mgy-1" style="width: 50%">
+          <div class="form-input">
+             <label for="model">Short Description (optional)</label>
+             <input type="text" class="" formControlName="desc" placeholder="Description" id="model">
+          </div>
+        </div>
+        <div class="form-button mgy-2">
+          <button class="btn button-primary" type="submit" [class.disabled]="shopForm.invalid">
+            <div class="flexed">
+              <span>Save Shop</span>
+              <span>
+                <img src="assets/add.svg" width="16" alt="">
+              </span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="vehicle-list">
+    <h5 class="sub-heading">All Shops</h5>
+    <div class="vehicles grid mgy-1">
+      <div class="vehicle grid-item" *ngFor="let shop of shops">
+        <div class="card actionable">
+          <h5 class="sub-heading">{{shop.name}}</h5>
+          <p class="mgy-1 smallest">{{shop.description}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

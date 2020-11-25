@@ -17,6 +17,7 @@ import { VehicleRoutesComponent } from './components/vehicle-routes/vehicle-rout
 import { PersonnelComponent } from './components/personnel/personnel.component';
 import { VehiclesComponent } from './components/vehicles/vehicles.component';
 import { AddDriverStockComponent } from './components/add-driver-stock/add-driver-stock.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { AddDriverStockComponent } from './components/add-driver-stock/add-drive
     VehicleRoutesComponent,
     PersonnelComponent,
     VehiclesComponent,
-    AddDriverStockComponent
+    AddDriverStockComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

@@ -7,7 +7,10 @@
         <form [formGroup]="shopSearch" class="inline" (ngSubmit)="getShop()">
             <div class="form-controls flexed">
                 <div class="form-input">
-                    <input type="text" formControlName="shopName" placeholder="Enter shop name here">
+                    <input type="text" list="shops" formControlName="shopName" placeholder="Enter shop name here">
+                    <datalist id="shops">
+                      <option value="{{shop.name}}" *ngFor="let shop of shops"></option>
+                    </datalist>
                 </div>
                 <div class="form-button">
                     <button class="btn search">
@@ -83,14 +86,6 @@
             <th>Sub Total</th>
           </tr>
         </thead>
-<!--        <tbody>-->
-<!--          <tr *ngFor="let prod of stockProducts">-->
-<!--            <td>{{prod.productName}}</td>-->
-<!--            <td>Ksh. {{prod.unitPrice}}</td>-->
-<!--            <td>{{prod.openingUnits}}</td>-->
-<!--            <td>Ksh. {{(prod.unitPrice * prod.openingUnits).toLocaleString()}}</td>-->
-<!--          </tr>-->
-<!--        </tbody>-->
       </table>
       <div class="table-data">
         <div class="table-data-item flexed" *ngFor="let prod of stockProducts">

@@ -14,6 +14,16 @@ export class StockDataService {
     return this.http.post(`${environment.apiBaseUrl}shops/id`, name);
   }
 
+  /** create a new shop */
+  addShop(shopData: any): Observable<any> {
+    return this.http.post(`${environment.apiBaseUrl}shops/new`, shopData);
+  }
+
+  /** get all available shops */
+  getShops(): Observable<any> {
+    return this.http.get(`${environment.apiBaseUrl}shops`);
+  }
+
   /** Open the desired Shop */
   openShop(stockData: any, shopId: number): Observable<any> {
     return this.http.post(`${environment.apiBaseUrl}shops/open/${shopId}`, stockData);

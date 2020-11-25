@@ -25,9 +25,10 @@ export class StockManagementComponent implements OnInit {
   shopSearch = this.fb.group({
     shopName: ['', Validators.required]
   });
+  shops: any[] = [];
 
   ngOnInit(): void {
-
+    this.getShops();
   }
 
   getShop(): void {
@@ -56,7 +57,7 @@ export class StockManagementComponent implements OnInit {
       disableClose: true,
       data: {shopId: this.shopId}
     }).afterClosed().subscribe((data) => {
-      if (data) {
+      if (data !== 'true') {
         this.getShopStock();
         this.shopOpen = !this.shopOpen;
         this.shopClosed = !this.shopClosed;
@@ -71,7 +72,7 @@ export class StockManagementComponent implements OnInit {
       disableClose: true,
       data: {shopId: this.shopId, stockProducts: this.stockProducts, shopName: this.shopName}
     }).afterClosed().subscribe((data) => {
-      if (data) {
+      if (data !== 'true') {
         this.getShopStock();
         this.shopOpen = !this.shopOpen;
         this.shopClosed = !this.shopClosed;
@@ -96,5 +97,11 @@ export class StockManagementComponent implements OnInit {
     });
 
     return totalAmount.reduce((a, b) => a + b , 0);
+  }
+
+  getShops(): void {
+    this.stockData.getShops().subscribe((data) => {
+      this.shops = data;
+    });
   }
 }
