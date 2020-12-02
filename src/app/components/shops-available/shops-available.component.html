@@ -30,8 +30,8 @@
   <div class="vehicle-list">
     <h5 class="sub-heading">All Shops</h5>
     <div class="vehicles grid mgy-1">
-      <div class="vehicle grid-item" *ngFor="let shop of shops">
-        <div class="card actionable">
+      <div class="vehicle grid-item" *ngFor="let shop of shops;let index = index">
+        <div class="card actionable card-color" [class.card-color-pri]="index == 1" [class.card-color-main]="index == 0" [class.card-color-sec]="index == 2">
           <h5 class="sub-heading">{{shop.name}}</h5>
           <p class="mgy-1 smallest">{{shop.description}}</p>
         </div>

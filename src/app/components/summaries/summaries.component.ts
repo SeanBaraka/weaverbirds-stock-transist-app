@@ -1,59 +1,71 @@
-import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
-import {Product} from "../../interfaces/product";
-import {FormBuilder, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import { Component, OnInit } from '@angular/core';
 import {StockDataService} from "../../services/stock-data.service";
+import {VehicleService} from "../../services/vehicle.service";
+import {Router} from "@angular/router";
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import htmltopdf from 'html-to-pdfmake';
+import {fromArray} from "rxjs/internal/observable/fromArray";
+import {JsonFormatter} from "tslint/lib/formatters";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
-  selector: 'app-close-shop',
-  templateUrl: './close-shop.component.html',
-  styleUrls: ['./close-shop.component.sass']
+  selector: 'app-summaries',
+  templateUrl: './summaries.component.html',
+  styleUrls: ['./summaries.component.sass']
 })
-export class CloseShopComponent implements OnInit {
-  stockProducts: Array<Product> = [];
-  dayStockProducts: Array<Product> = [];
-  product: Product;
+export class SummariesComponent implements OnInit {
 
-  @ViewChild('content') content: ElementRef;
+  shops: any[] = [];
+  vehiclesInRoute: any[] = [];
+  dateToday = new Date(Date.now()).toDateString();
+  stockReports: any[] = [];
 
-
-  constructor(private dialog: MatDialogRef<CloseShopComponent>,
-              private fb: FormBuilder,
-              @Inject(MAT_DIALOG_DATA) public data: any,
-              private stockService: StockDataService) { }
-
-  closeStockForm = this.fb.group({
-    name: ['', Validators.required],
-    availableUnits: ['', Validators.required],
-    unitPrice: ['', Validators.required]
-  });
-  finished = false;
+  constructor(
+    private stockService: StockDataService,
+    private vehicleService: VehicleService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
-    this.getDayStock();
+    this.getShops();
+    this.getVehiclesInRoute();
+    this.getStockReport();
   }
 
-  getDayStock(): void {
-    const shortDate = new Date(Date.now()).toISOString().split('T')[0];
-
-    this.stockService.getDaysStock(this.data.shopId, shortDate).subscribe((response) => {
-      this.dayStockProducts = response;
+  getShops(): void {
+    this.stockService.getShops().subscribe((data) => {
+      this.shops = data;
     });
   }
 
-  updateStock(): void {
+  getStockReport(): void {
+    this.stockService.stockReport().subscribe((data: any[]) => {
+      data.forEach((item) => {
+        item.date = new Date(item.date).toLocaleDateString('en-GB');
+      });
+      this.stockReports = data;
+    });
   }
 
-  closeShop(): void {
-    const html = htmltopdf(`${this.content.nativeElement.outerHTML}`, {
-          defaultStyles: {
-            table: ''
-          }
-        });
+  getVehiclesInRoute(): void {
+    this.vehicleService.vehiclesInTransist().subscribe((data: any[]) => {
+      data.forEach((item) => {
+        item.date = new Date(item.date).toLocaleDateString();
+      });
+      this.vehiclesInRoute = data;
+    });
+  }
+
+  goToShop(id: any): void {
+    this.router.navigate(['stock']);
+  }
+
+  printDayReport(id: number): void {
+    const currentRecord = this.stockReports.filter(x => x.id === id).pop();
+    const stockListItems = currentRecord.stockItems;
+    const stockItems = Array.from(JSON.parse(stockListItems));
+
     const documentDefinition = {
       content: [
          {
@@ -65,14 +77,14 @@ export class CloseShopComponent implements OnInit {
           width: 100
         },
         {
-          text: `Closing stock Report - Shop (${this.data.shopName})`,
+          text: `Final Stock Report - (${currentRecord.shop})`,
           fontSize: 12,
           style: 'sectionHeader'
         },
         {
           columns: [
             [
-              { text: `Date - ${new Date(Date.now()).toLocaleDateString()}`, style: 'textRegular'},
+              { text: `Date - ${new Date(currentRecord.date).toLocaleDateString()}`, style: 'textRegular'},
               {text: 'Weaverbirds Limited', style: 'textRegular'},
               {text: 'P.O. Box 456-90100', style: 'textRegular'},
               {
@@ -103,7 +115,7 @@ export class CloseShopComponent implements OnInit {
             },
             body: [
               ['Product Name', 'Unit Price', 'Opening Stock', 'Added Stock', 'Closing Stock', 'Items Sold', 'Sub Total'],
-              ...this.dayStockProducts.map((p => (
+              ...stockItems.map(((p: any) => (
                 [
                   p.productName, p.unitPrice, p.openingUnits, p.addedUnits,
                   p.closingUnits, (p.openingUnits + p.addedUnits) - p.closingUnits,
@@ -113,7 +125,7 @@ export class CloseShopComponent implements OnInit {
                 {
                   text: 'Total', fontSize: 8, bold: true, colspan: 6
                 }, {}, {}, {}, {}, {},
-                this.getStockTotalAmount().toFixed(2)
+                currentRecord.soldStockAmount.toFixed(2)
                 ]
             ]
           },
@@ -129,8 +141,7 @@ export class CloseShopComponent implements OnInit {
             headerRows: 1,
             widths: ['auto', 'auto'],
             body: [
-              ['Total Items Sold:', this.getStockTotal()],
-              ['Total Sales:', `KSH. ${this.getStockTotalAmount().toLocaleString()}`]
+              ['Total Sales:', `KSH. ${currentRecord.soldStockAmount.toLocaleString()}`]
             ]
           },
           layout: 'noBorders',
@@ -151,7 +162,7 @@ export class CloseShopComponent implements OnInit {
                 style: 'textRegular'
               },
               {
-                qr: `total sales on ${new Date(Date.now()).toLocaleDateString()} were ${this.getStockTotalAmount()}`,
+                qr: `total sales on ${new Date(currentRecord.date).toLocaleDateString()} were ${currentRecord.soldStockAmount}`,
                 fit: '50',
                 alignment: 'center'
               }
@@ -175,49 +186,20 @@ export class CloseShopComponent implements OnInit {
         }
       }
     };
-    // pdfMake.createPdf(documentDefinition).print();
-    const totalSales = this.getStockTotalAmount();
-    const openingStock = this.getOpeningStock();
-    this.stockService.closeShop(this.data.shopId, this.dayStockProducts, openingStock, totalSales).subscribe((resp) => {
-      if (resp) {
-        this.finished = true;
-        this.dialog.close('success'); // close the dialog
-        pdfMake.createPdf(documentDefinition).print(); // print the table data
-      }
-    });
+    pdfMake.createPdf(documentDefinition).print();
   }
 
-  getOpeningStock(): number {
-    const openingStockAmounts = [];
-    this.dayStockProducts.forEach((item) => {
-      openingStockAmounts.push(((item.openingUnits + item.addedUnits) * item.unitPrice));
-    });
+  filterStock(value: any): void {
+    if (value === '') {
+      this.getStockReport();
+    }
+    const dataArray = this.stockReports;
+    const stockReset = [...dataArray];
 
-    return openingStockAmounts.reduce((a, b) => a + b, 0);
+    this.stockReports = this.stockReports.filter(r => r.shop.search(value) === 0);
+    if (this.stockReports.filter(r => r.shop.search(value) === 0).length < 1 ) {
+      this.stockReports = this.stockReports.filter(r => r.date.search(value) === 0);
+    }
+
   }
-
-  updateStockRecord(index: number, changedValue: any): void {
-    this.dayStockProducts[index].closingUnits = changedValue;
-    this.dayStockProducts[index].soldUnits = this.dayStockProducts[index].openingUnits - this.dayStockProducts[index].closingUnits;
-  }
-
-  getStockTotal(): number {
-    const totalStock = [];
-    this.dayStockProducts.forEach((item) => {
-      totalStock.push(item.soldUnits);
-    });
-
-    return totalStock.reduce((a, b) => a + b , 0);
-  }
-
-  getStockTotalAmount(): number {
-
-    const totalAmount = [];
-    this.dayStockProducts.forEach((item) => {
-      totalAmount.push(item.soldUnits * item.unitPrice);
-    });
-
-    return totalAmount.reduce((a, b) => a + b , 0);
-  }
-
 }

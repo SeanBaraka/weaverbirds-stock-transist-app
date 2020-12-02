@@ -10,7 +10,7 @@ export class StockDataService {
 
   constructor(private http: HttpClient) { }
 
-  getShopData(name: string): Observable<any> {
+  getShopData(name: any): Observable<any> {
     return this.http.post(`${environment.apiBaseUrl}shops/id`, name);
   }
 
@@ -35,7 +35,14 @@ export class StockDataService {
   }
 
   /** an attempt to close the desired shop */
-  closeShop(shopId: number, stockInfo: any): Observable<any> {
-    return this.http.post(`${environment.apiBaseUrl}shops/close/${shopId}`, {stocks: stockInfo});
+  closeShop(shopId: number, stockInfo: any, openingAmount: any, closingAmount: any): Observable<any> {
+    return this.http.post(
+      `${environment.apiBaseUrl}shops/close/${shopId}`,
+      {stocks: stockInfo, openingStock: openingAmount, closingStock: closingAmount });
+  }
+
+  /** get stock reports */
+  stockReport(): Observable<any> {
+    return this.http.get(`${environment.apiBaseUrl}stock/report`);
   }
 }

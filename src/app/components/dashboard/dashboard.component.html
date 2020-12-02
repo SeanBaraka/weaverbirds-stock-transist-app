@@ -1,32 +1,11 @@
-<div class="body-container">
-  <h3 class="main-heading">Summaries and Reports</h3>
-  <!--  shops info-->
-  <div class="shops-info mgy-2">
-    <h5>Your Shops</h5>
-    <div class="grid shops-summary mgy-1">
-      <div class="grid-item card card-color" [class.card-color-pri]="index == 1" [class.card-color-main]="index == 0" [class.card-color-sec]="index == 2" *ngFor="let shop of shops;let index = index">
-        <h5>{{shop.name}}</h5>
-        <div class="desc mgy-1">
-          <p>Today's Stock: </p>
-        </div>
-      </div>
+<div class="app-container flexed">
+  <aside>
+    <app-sidemenu></app-sidemenu>
+  </aside>
+  <main>
+    <div class="user-logged-in">
+       <app-user-logged-in></app-user-logged-in>
     </div>
-  </div>
-
-  <!--  vehicles in route-->
-  <div class="vehicles-in-route mgy-2">
-    <h5>Vehicles in various routes</h5>
-    <div class="vehicles-routes-summary mgy-1" style="max-height: 250px;overflow: auto">
-      <div *ngIf="vehiclesInRoute.length > 0" class="card-list">
-        <h6 style="margin: 0;padding: 0 .5em;font-size: 90%">{{dateToday}}</h6>
-        <div class="card-list-item" *ngFor="let vehicleInfo of vehiclesInRoute; let index = index">
-<!--          <div class="small">{{vehicleInfo.date}}</div>-->
-          <div><span class="small">Vehicle</span> -  <span class="bold">{{vehicleInfo.vehicle}}</span></div>
-          <div><span class="small">Driver</span> - <span class="bold">{{vehicleInfo.driver}}</span></div>
-          <div><span class="small">route - </span>{{vehicleInfo.route}}</div>
-          <div class="small last"><a>Details</a></div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <router-outlet></router-outlet>
+  </main>
 </div>

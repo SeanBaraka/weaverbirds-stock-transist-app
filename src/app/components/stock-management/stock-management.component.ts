@@ -31,8 +31,22 @@ export class StockManagementComponent implements OnInit {
     this.getShops();
   }
 
-  getShop(): void {
-    this.stockData.getShopData(this.shopSearch.value).subscribe((data: any) => {
+  getShop(shopName?: string): void {
+    if (shopName != null && shopName !== '') {
+      const shopInfo = {
+        shopName
+      };
+      this.stockData.getShopData(shopInfo).subscribe((shopData: any) => {
+        this.shopId = shopData.shop.id;
+        this.shopName = shopData.shop.name;
+        this.shopOpen = shopData.shop.openStatus;
+        this.shopClosed = !this.shopOpen;
+        this.openingStock = shopData.shop.openingStock;
+        this.amount = shopData.shop.amount;
+        this.getShopStock();
+      });
+    } else {
+      this.stockData.getShopData(this.shopSearch.value).subscribe((data: any) => {
       this.shopId = data.shop.id;
       this.shopName = data.shop.name;
       this.shopOpen = data.shop.openStatus;
@@ -41,6 +55,7 @@ export class StockManagementComponent implements OnInit {
       this.amount = data.shop.amount;
       this.getShopStock();
     });
+    }
   }
 
   getShopStock(): void {
@@ -58,9 +73,10 @@ export class StockManagementComponent implements OnInit {
       data: {shopId: this.shopId}
     }).afterClosed().subscribe((data) => {
       if (data !== 'true') {
-        this.getShopStock();
-        this.shopOpen = !this.shopOpen;
-        this.shopClosed = !this.shopClosed;
+        this.getShop(this.shopSearch.get('shopName').value);
+        // this.getShopStock();
+        // this.shopOpen = !this.shopOpen; // remain true
+        // this.shopClosed = false;
       }
     });
   }
@@ -90,10 +106,9 @@ export class StockManagementComponent implements OnInit {
   }
 
   getStockTotalAmount(): number {
-
-    const totalAmount = []
+    const totalAmount = [];
     this.stockProducts.forEach((item) => {
-      totalAmount.push(item.openingUnits * item.unitPrice);
+      totalAmount.push((item.openingUnits + item.addedUnits) * item.unitPrice);
     });
 
     return totalAmount.reduce((a, b) => a + b , 0);
@@ -103,5 +118,9 @@ export class StockManagementComponent implements OnInit {
     this.stockData.getShops().subscribe((data) => {
       this.shops = data;
     });
+  }
+
+  addStock(): void {
+
   }
 }

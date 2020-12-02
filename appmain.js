@@ -6,6 +6,8 @@ let wind;
 function createWindow() {
  wind = new BrowserWindow({
    width: 1080,
+   minWidth: 1060,
+   minHeight: 640,
    height: 680,
    center: true,
    frame: true,
@@ -23,10 +25,12 @@ function createWindow() {
     wind.show()
   })
 
-  const pathName = path.resolve('weaver/index.html') // production build
+  const pathName = path.resolve('index.html') // production build
   // const pathName = path.resolve('dist/weaver/index.html') // development machine
-  wind.loadFile(
-    pathName,
+  wind.loadURL(
+    url.format({
+      pathname: path.join(__dirname, 'index.html')
+    })
   )
   wind.on('close', () => {
     wind = null

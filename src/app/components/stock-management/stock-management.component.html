@@ -49,7 +49,12 @@
         <tr>
           <th class="small">Added Stock</th>
           <td class="small">:</td>
-          <td class="smallest">0</td>
+          <td class="smallest"><span class="bold" *ngIf="openingStock;else no_stock">Ksh. {{(getStockTotalAmount() - amount).toLocaleString()}}</span>
+            <div *ngIf="shopOpen" (click)="openShopModal()" style="cursor: pointer;display: inline-block;margin-left: 1em;text-decoration: underline;color: #540d6e">
+              <small class="small" style="font-size: 11px!important;">Receive New Stock</small>
+              <img src="assets/edit.svg" width="12" alt="" class="mgl-1">
+            </div>
+          </td>
         </tr>
         <tr>
           <th class="small">Closing Stock</th>
@@ -91,8 +96,8 @@
         <div class="table-data-item flexed" *ngFor="let prod of stockProducts">
           <div class="item">{{prod.productName}}</div>
           <div class="item">{{prod.unitPrice}}</div>
-          <div class="item">{{prod.openingUnits}}</div>
-          <div class="item">{{(prod.unitPrice * prod.openingUnits).toLocaleString()}}</div>
+          <div class="item">{{prod.openingUnits + prod.addedUnits}}</div>
+          <div class="item">{{(prod.unitPrice * (prod.openingUnits + prod.addedUnits)).toLocaleString()}}</div>
         </div>
       </div>
       <table class="app-table">

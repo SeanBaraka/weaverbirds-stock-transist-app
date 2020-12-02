@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {StockDataService} from "../../services/stock-data.service";
 import {VehicleService} from "../../services/vehicle.service";
+import {Router} from "@angular/router";
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,33 +11,9 @@ import {VehicleService} from "../../services/vehicle.service";
   styleUrls: ['./dashboard.component.sass']
 })
 export class DashboardComponent implements OnInit {
-  shops: any[] = [];
-  vehiclesInRoute: any[] = [];
-  dateToday = new Date(Date.now()).toDateString();
-
-  constructor(
-    private stockService: StockDataService,
-    private vehicleService: VehicleService
-  ) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.getShops();
-    this.getVehiclesInRoute();
-  }
-
-  getShops(): void {
-    this.stockService.getShops().subscribe((data) => {
-      this.shops = data;
-    });
-  }
-
-  getVehiclesInRoute(): void {
-    this.vehicleService.vehiclesInTransist().subscribe((data: any[]) => {
-      data.forEach((item) => {
-        item.date = new Date(item.date).toLocaleDateString();
-      });
-      this.vehiclesInRoute = data;
-    });
   }
 
 }

@@ -1,0 +1,23 @@
+<div class="main-grid">
+  <div class="container">
+    <div class="mgy-1">
+      <img src="assets/weaverlogo.svg" width="175" alt="">
+    </div>
+    <h3>Hello, proceed to login</h3>
+    <div class="form mgy-2">
+      <form [formGroup]="authLogin" class="form" (submit)="loginAttempt()">
+        <div class="form-input">
+          <label for="username">Enter your username</label>
+          <input type="text" formControlName="username" id="username">
+        </div>
+        <div class="form-input mgy-1">
+          <label for="password">Enter your password</label>
+          <input type="password" formControlName="password" id="password">
+        </div>
+        <div class="form-input mgy-2">
+          <button class="button-info">Sign in</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

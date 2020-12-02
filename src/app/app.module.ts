@@ -18,6 +18,9 @@ import { PersonnelComponent } from './components/personnel/personnel.component';
 import { VehiclesComponent } from './components/vehicles/vehicles.component';
 import { AddDriverStockComponent } from './components/add-driver-stock/add-driver-stock.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { AuthComponent } from './components/auth/auth.component';
+import { UserLoggedInComponent } from './components/user-logged-in/user-logged-in.component';
+import { SummariesComponent } from './components/summaries/summaries.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,10 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     PersonnelComponent,
     VehiclesComponent,
     AddDriverStockComponent,
-    DashboardComponent
+    DashboardComponent,
+    AuthComponent,
+    UserLoggedInComponent,
+    SummariesComponent
   ],
   imports: [
     BrowserModule,
