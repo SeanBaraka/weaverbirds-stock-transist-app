@@ -6,6 +6,8 @@ import {StockDataService} from "../../services/stock-data.service";
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import htmltopdf from 'html-to-pdfmake';
+import {MessageNotificationsService} from "../../services/message-notifications.service";
+import {environment} from "../../../environments/environment";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -24,6 +26,7 @@ export class CloseShopComponent implements OnInit {
   constructor(private dialog: MatDialogRef<CloseShopComponent>,
               private fb: FormBuilder,
               @Inject(MAT_DIALOG_DATA) public data: any,
+              private messageNotification: MessageNotificationsService,
               private stockService: StockDataService) { }
 
   closeStockForm = this.fb.group({
@@ -183,6 +186,13 @@ export class CloseShopComponent implements OnInit {
     this.stockService.closeShop(this.data.shopId, this.dayStockProducts, openingStock, closingStock, addedStock).subscribe((resp) => {
       if (resp) {
         this.finished = true;
+        const message = {
+          recipients: environment.recipients,
+          message: `Hello Peter, ${resp.success}`
+        };
+        this.messageNotification.sendMessage(message).subscribe(mess => {
+          const messageResponse = mess;
+        } );
         this.dialog.close('success'); // close the dialog
         pdfMake.createPdf(documentDefinition).print(); // print the table data
       }

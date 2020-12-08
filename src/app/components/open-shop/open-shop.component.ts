@@ -5,6 +5,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {ProductsManagementService} from "../../services/products-management.service";
 import {StockDataService} from "../../services/stock-data.service";
 import {MessageNotificationsService} from "../../services/message-notifications.service";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-open-shop',
@@ -51,7 +52,7 @@ export class OpenShopComponent implements OnInit {
     this.stockService.openShop(this.stockProducts, this.data.shopId).subscribe(data => {
       if (data) {
         const message = {
-          recipients: ['+254713366174', '+254724685059'],
+          recipients: environment.recipients,
           message: `Hello Peter, ${data.success}`
         };
 

@@ -9,6 +9,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import htmltopdf from 'html-to-pdfmake';
 import {MessageNotificationsService} from "../../services/message-notifications.service";
+import {environment} from "../../../environments/environment";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -93,7 +94,7 @@ export class AddDriverStockComponent implements OnInit {
         this.vehicleService.dispatchVehicle(dispatchInfo).subscribe((dispatchResponse) => {
           if (dispatchResponse) {
             const message = {
-              recipients: ['+254713366174', '+254724685059'],
+              recipients: environment.recipients,
               message: `Hello Peter, ${dispatchResponse.success}`
             };
             this.messageNotifications.sendMessage(message).subscribe((response: any) => {
