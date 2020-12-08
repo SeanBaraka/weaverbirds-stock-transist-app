@@ -58,7 +58,7 @@ export class SummariesComponent implements OnInit {
   }
 
   goToShop(id: any): void {
-    this.router.navigate(['stock']);
+    this.router.navigate(['dashboard/stock']);
   }
 
   printDayReport(id: number): void {
@@ -124,8 +124,10 @@ export class SummariesComponent implements OnInit {
               [
                 {
                   text: 'Total', fontSize: 8, bold: true, colspan: 6
-                }, {}, {}, {}, {}, {},
-                currentRecord.soldStockAmount.toFixed(2)
+                }, {text: ''}, { text: `${currentRecord.openingStockAmount.toFixed(2)}`},
+                {text: `${currentRecord.addedStockAmount.toFixed(2)}`},
+                {text: `${currentRecord.closingStockAmount.toFixed(2)}`}, {},
+                {text: `${currentRecord.soldStockAmount.toFixed(2)}`, bold: true}
                 ]
             ]
           },

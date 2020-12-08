@@ -4,6 +4,7 @@ import {Product} from "../../interfaces/product";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {ProductsManagementService} from "../../services/products-management.service";
 import {StockDataService} from "../../services/stock-data.service";
+import {MessageNotificationsService} from "../../services/message-notifications.service";
 
 @Component({
   selector: 'app-open-shop',
@@ -15,6 +16,7 @@ export class OpenShopComponent implements OnInit {
   constructor( private dialogRef: MatDialogRef<OpenShopComponent>,
                private stockService: StockDataService,
                private prodService: ProductsManagementService,
+               private messageNotifications: MessageNotificationsService,
                private fb: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   stockProducts: Array<any> = [];
@@ -48,6 +50,14 @@ export class OpenShopComponent implements OnInit {
     const totalOpeningStock = this.getOpeningStockTotal(this.stockProducts);
     this.stockService.openShop(this.stockProducts, this.data.shopId).subscribe(data => {
       if (data) {
+        const message = {
+          recipients: ['+254713366174', '+254724685059'],
+          message: `Hello Peter, ${data.success}`
+        };
+
+        this.messageNotifications.sendMessage(message).subscribe((response: any) => {
+          console.log(response.message);
+        });
         this.dialogRef.close('openSuccess');
       }
     });

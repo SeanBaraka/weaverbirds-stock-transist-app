@@ -178,7 +178,9 @@ export class CloseShopComponent implements OnInit {
     // pdfMake.createPdf(documentDefinition).print();
     const totalSales = this.getStockTotalAmount();
     const openingStock = this.getOpeningStock();
-    this.stockService.closeShop(this.data.shopId, this.dayStockProducts, openingStock, totalSales).subscribe((resp) => {
+    const addedStock = this.getAddedStock();
+    const closingStock = this.getClosingStock();
+    this.stockService.closeShop(this.data.shopId, this.dayStockProducts, openingStock, closingStock, addedStock).subscribe((resp) => {
       if (resp) {
         this.finished = true;
         this.dialog.close('success'); // close the dialog
@@ -187,10 +189,28 @@ export class CloseShopComponent implements OnInit {
     });
   }
 
+  getClosingStock(): number {
+    const closingStock = [];
+    this.dayStockProducts.forEach((item) => {
+      closingStock.push(((item.openingUnits + item.addedUnits - item.soldUnits) * item.unitPrice));
+    });
+
+    return closingStock.reduce((a, b) => a + b, 0);
+  }
+
+  getAddedStock(): number {
+    const addedStockAmount = [];
+    this.dayStockProducts.forEach((item) => {
+      addedStockAmount.push((item.addedUnits * item.unitPrice));
+    });
+
+    return addedStockAmount.reduce((a, b) => a + b, 0);
+  }
+
   getOpeningStock(): number {
     const openingStockAmounts = [];
     this.dayStockProducts.forEach((item) => {
-      openingStockAmounts.push(((item.openingUnits + item.addedUnits) * item.unitPrice));
+      openingStockAmounts.push((item.openingUnits * item.unitPrice));
     });
 
     return openingStockAmounts.reduce((a, b) => a + b, 0);
@@ -198,7 +218,8 @@ export class CloseShopComponent implements OnInit {
 
   updateStockRecord(index: number, changedValue: any): void {
     this.dayStockProducts[index].closingUnits = changedValue;
-    this.dayStockProducts[index].soldUnits = this.dayStockProducts[index].openingUnits - this.dayStockProducts[index].closingUnits;
+    this.dayStockProducts[index].soldUnits = (
+      this.dayStockProducts[index].openingUnits + this.dayStockProducts[index].addedUnits) - this.dayStockProducts[index].closingUnits;
   }
 
   getStockTotal(): number {

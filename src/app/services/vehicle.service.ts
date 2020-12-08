@@ -46,4 +46,9 @@ export class VehicleService {
   vehiclesInTransist(): Observable<any> {
     return this.http.get(`${environment.apiBaseUrl}vehicles/in-route`);
   }
+
+  /** get vehicles reports */
+  stockReport(): Observable<any> {
+    return this.http.get(`${environment.apiBaseUrl}vehicles/report`);
+  }
 }

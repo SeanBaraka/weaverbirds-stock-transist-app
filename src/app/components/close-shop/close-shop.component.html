@@ -22,7 +22,7 @@
           <td>{{product.addedUnits}}</td>
           <td contenteditable="true" class="bordered" (input)="updateStockRecord(index, $event.target.innerHTML)">{{product.closingUnits}}</td>
           <td>{{(product.openingUnits + product.addedUnits) - product.closingUnits}}</td>
-          <td class="bold">Ksh. {{(product.unitPrice * (product.openingUnits - product.closingUnits)).toLocaleString()}}</td>
+          <td class="bold">Ksh. {{(product.unitPrice * ((product.openingUnits + product.addedUnits) - product.closingUnits)).toLocaleString()}}</td>
         </tr>
       </tbody>
     </table>

@@ -8,6 +8,7 @@ import {StockDataService} from "../../services/stock-data.service";
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import htmltopdf from 'html-to-pdfmake';
+import {MessageNotificationsService} from "../../services/message-notifications.service";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -44,6 +45,7 @@ export class AddDriverStockComponent implements OnInit {
               private vehicleService: VehicleService,
               private prodService: ProductsManagementService,
               private dialog: MatDialogRef<AddDriverStockComponent>,
+              private messageNotifications: MessageNotificationsService,
               private stockService: StockDataService) { }
 
   ngOnInit(): void {
@@ -90,6 +92,13 @@ export class AddDriverStockComponent implements OnInit {
       if (rsp) {
         this.vehicleService.dispatchVehicle(dispatchInfo).subscribe((dispatchResponse) => {
           if (dispatchResponse) {
+            const message = {
+              recipients: ['+254713366174', '+254724685059'],
+              message: `Hello Peter, ${dispatchResponse.success}`
+            };
+            this.messageNotifications.sendMessage(message).subscribe((response: any) => {
+              console.log(response.message);
+            });
             // print dispatch report
             this.printReport();
             this.dialog.close(dispatchResponse);

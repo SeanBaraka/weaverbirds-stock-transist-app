@@ -50,7 +50,7 @@
           <div><span class="bold">{{vehicleInfo.vehicle}}</span></div>
           <div><span class="small">Driver</span> - <span class="bold">{{vehicleInfo.driver}}</span></div>
           <div><span class="small">route - </span>{{vehicleInfo.route}}</div>
-          <div class="small last"><a>Details</a></div>
+          <div class="small last" (click)="printReport(vehicleInfo.id)"><a>Details</a></div>
         </div>
       </div>
     </div>

@@ -27,19 +27,21 @@
         <div class="card-list-item table-header">
           <div class="bold">Date</div>
           <div class="bold">Shop</div>
-          <div class="bold">Opening Stock</div>
-          <div class="bold">Closing Stock</div>
+          <div class="bold">Opening</div>
+          <div class="bold">Added</div>
+          <div class="bold">Closing</div>
           <div class="bold">Sales</div>
-          <div></div>
+          <div>Actions</div>
         </div>
       </div>
       <div *ngIf="stockReports.length > 0;else noitems" class="card-list">
-        <div class="card-list-item" *ngFor="let stockInfo of stockReports; let index = index">
+        <div class="card-list-item data-set" *ngFor="let stockInfo of stockReports; let index = index">
 <!--          <div class="small">{{vehicleInfo.date}}</div>-->
           <div><span class="">{{stockInfo.date}}</span></div>
           <div>{{stockInfo.shop}}</div>
           <div><span class="">Ksh. {{stockInfo.openingStockAmount.toLocaleString()}}</span></div>
-          <div><span class="">Ksh. {{stockInfo.closingStockAmount.toLocaleString()}}</span></div>
+          <div><span>Ksh. {{stockInfo.addedStockAmount.toLocaleString()}}</span></div>
+           <div><span class="">Ksh. {{stockInfo.closingStockAmount.toLocaleString()}}</span></div>
           <div><span class="bold">Ksh. {{stockInfo.soldStockAmount.toLocaleString()}}</span></div>
           <div class="smallest bold" (click)="printDayReport(stockInfo.id)"><a>View Full</a></div>
         </div>
