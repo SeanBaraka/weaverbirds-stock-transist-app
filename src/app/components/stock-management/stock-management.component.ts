@@ -99,7 +99,7 @@ export class StockManagementComponent implements OnInit {
   getStockTotal(): number {
     const totalStock = [];
     this.stockProducts.forEach((item) => {
-      totalStock.push(item.openingUnits);
+      totalStock.push((item.openingUnits + item.addedUnits));
     });
 
     return totalStock.reduce((a, b) => a + b , 0);
