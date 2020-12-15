@@ -5,14 +5,14 @@
       <div class="stock-inline-form">
         <div class="form-input">
           <label for="name">Product Name</label>
-          <input id="name" type="text" formControlName="name" list="products" placeholder="Enter Product Name">
+          <input id="name" type="text" formControlName="name" list="products" (change)="checkPrice($event.target.value)" placeholder="Enter Product Name">
           <datalist id="products">
             <option *ngFor="let prod of availableProducts" value="{{prod.name}}"></option>
           </datalist>
         </div>
         <div class="form-input mgl-1">
           <label for="price">Unit Price</label>
-          <input type="text" id="price" formControlName="unitPrice" class="shorter" placeholder="140">
+          <input type="text" id="price" value="{{productPrice}}" formControlName="unitPrice" class="shorter" placeholder="140">
         </div>
         <div class="form-input mgl-1">
           <label for="qty">Quantity</label>

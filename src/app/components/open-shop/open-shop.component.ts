@@ -23,10 +23,11 @@ export class OpenShopComponent implements OnInit {
   stockProducts: Array<any> = [];
   availableProducts: Array<any> = [];
   openingStock = 0;
+  productPrice = 0;
 
   addStockForm = this.fb.group({
     name: ['', Validators.required],
-    unitPrice: ['', Validators.required],
+    unitPrice: [''],
     availableUnits: ['', Validators.required]
   });
 
@@ -42,6 +43,7 @@ export class OpenShopComponent implements OnInit {
   }
 
   updateStock(): void {
+    this.addStockForm.get('unitPrice').setValue(this.productPrice);
     this.stockProducts.push(this.addStockForm.value);
     this.openingStock = this.getOpeningStockTotal(this.stockProducts);
     this.addStockForm.reset();
@@ -75,5 +77,10 @@ export class OpenShopComponent implements OnInit {
 
     return totalValuesArray.reduce((a, b) => a + b, 0);
 
+  }
+
+  checkPrice(value: any): void {
+    const product = this.availableProducts.filter(x => x.name === value).pop();
+    this.productPrice = product.unitPrice;
   }
 }

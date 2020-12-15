@@ -69,7 +69,7 @@ export class SummariesComponent implements OnInit {
     const documentDefinition = {
       content: [
          {
-          text: `${new Date(Date.now()).toLocaleDateString()}`,
+          text: `${new Date(Date.now()).toLocaleDateString('en-GB')}`,
           fontSize: 7
         },
         {
@@ -84,7 +84,7 @@ export class SummariesComponent implements OnInit {
         {
           columns: [
             [
-              { text: `Date - ${new Date(currentRecord.date).toLocaleDateString()}`, style: 'textRegular'},
+              { text: `Date - ${currentRecord.date}`, style: 'textRegular'},
               {text: 'Weaverbirds Limited', style: 'textRegular'},
               {text: 'P.O. Box 456-90100', style: 'textRegular'},
               {
