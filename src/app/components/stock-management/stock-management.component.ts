@@ -5,6 +5,9 @@ import {MatDialog} from "@angular/material/dialog";
 import {OpenShopComponent} from "../open-shop/open-shop.component";
 import {CloseShopComponent} from "../close-shop/close-shop.component";
 import {Product} from "../../interfaces/product";
+import {AddStockProductComponent} from "../add-stock-product/add-stock-product.component";
+import {ProductTransferComponent} from "../product-transfer/product-transfer.component";
+import {DataDeleteComponent} from "../data-delete/data-delete.component";
 
 @Component({
   selector: 'app-stock-management',
@@ -18,7 +21,7 @@ export class StockManagementComponent implements OnInit {
   shopName: any;
   openingStock: any;
   amount: any;
-  stockProducts: Array<Product> = [];
+  stockProducts: any[] = [];
 
   constructor(private fb: FormBuilder, private stockData: StockDataService, private dialog: MatDialog) { }
 
@@ -27,7 +30,13 @@ export class StockManagementComponent implements OnInit {
   });
   shops: any[] = [];
 
+  // selected shop from the dashboard summaries
+  selectedShop: any;
+  loading = false;
+
   ngOnInit(): void {
+    this.selectedShop = history.state.shop;
+    this.getShop(this.selectedShop.name);
     this.getShops();
   }
 
@@ -59,9 +68,13 @@ export class StockManagementComponent implements OnInit {
   }
 
   getShopStock(): void {
-    const shortDate = new Date(Date.now()).toISOString().split('T')[0];
-    this.stockData.getDaysStock(this.shopId, shortDate).subscribe((res: any[]) => {
-      this.stockProducts = res;
+    this.loading = true;
+    // const shortDate = new Date(Date.now()).toISOString().split('T')[0];
+    this.stockData.getShopStock(this.selectedShop.id).subscribe((products) => {
+      if (products) {
+        this.loading = false;
+        this.stockProducts = products;
+      }
     });
   }
 
@@ -120,7 +133,46 @@ export class StockManagementComponent implements OnInit {
     });
   }
 
-  addStock(): void {
+  launchAddModal(): void {
+    this.dialog.open(AddStockProductComponent, {
+      width: '680px',
+      height: '300px',
+      data: {
+        shopId: this.selectedShop.id
+      }
+    }).afterClosed().subscribe((data) => {
+      if (data === 'true') {
+        this.getShopStock();
+      }
+    });
+  }
 
+  transferProduct(product): void {
+    this.dialog.open(ProductTransferComponent, {
+      width: '680px',
+      height: '250px',
+      data: {
+        shopId: this.selectedShop.id,
+        product
+      }
+    }).afterClosed().subscribe((data) => {
+      if (data === 'true') {
+        this.getShopStock();
+      }
+    });
+  }
+
+  deleteProduct(id: number): void {
+    this.dialog.open(DataDeleteComponent, {
+      width: '680px',
+      height: '250px',
+      data: {
+        productId: id
+      }
+    }).afterClosed().subscribe((data) => {
+      if (data === 'true') {
+        this.getShopStock();
+      }
+    });
   }
 }

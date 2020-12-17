@@ -65,6 +65,15 @@ button
   &.button-info
     background: $tufts-blue
     color: $dark-color
+  &.button-image
+    width: 25px
+    height: 25px
+    padding: 3px
+    background: none
+    border: none
+    &:hover
+      background: #a9a9a950
+      border-radius: 100%
 
   &.button-text
     background: transparent
@@ -74,6 +83,11 @@ button
       color: $success-color
     &.text-danger
       color: $danger-color
+    &.text-info
+      color: $tufts-blue
+    &.bordered
+      border: 1px solid $tufts-blue
+      border-radius: 50px
 
 
   &.disabled
@@ -89,6 +103,14 @@ button
 
 .opaque
   opacity: 45%
+
+.placeholder
+  padding: 1em
+  text-align: center
+  opacity: 45%
+  pointer-events: none
+  img
+    filter: invert(50%)
 
 .small
   font-size: 90%
@@ -106,6 +128,9 @@ button
   margin: .5em 0
 .mgy-2
   margin: 1.2em 0
+
+.center
+  text-align: center
 
 .text
   &-success
@@ -215,6 +240,8 @@ button
   gap: 1em
   &-center
     place-items: center
+  &-column
+    grid-template-columns: auto
 
 // Custom table data Idea from binance
 .table-data
@@ -291,3 +318,16 @@ span
   &.block
     display: block
     margin: 3px 0
+
+
+// Alert..! Alerts are cool
+.alert
+  padding: 1em
+  border-radius: 3px
+  pointer-events: none
+  user-focus: none
+  font-size: 12px
+  &-success
+    background-color: #426A5A70
+    color: $dark-color
+    font-weight: 500

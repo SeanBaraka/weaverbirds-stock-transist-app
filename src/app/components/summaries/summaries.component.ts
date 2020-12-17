@@ -57,8 +57,12 @@ export class SummariesComponent implements OnInit {
     });
   }
 
-  goToShop(id: any): void {
-    this.router.navigate(['dashboard/stock']);
+  goToShop(shop: any): void {
+    this.router.navigate(['dashboard/stock'], {
+      state: {
+        shop
+      }
+    });
   }
 
   printDayReport(id: number): void {
