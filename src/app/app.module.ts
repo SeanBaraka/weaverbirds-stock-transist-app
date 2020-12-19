@@ -24,6 +24,10 @@ import { SummariesComponent } from './components/summaries/summaries.component';
 import { AddStockProductComponent } from './components/add-stock-product/add-stock-product.component';
 import { ProductTransferComponent } from './components/product-transfer/product-transfer.component';
 import { DataDeleteComponent } from './components/data-delete/data-delete.component';
+import { FinanceComponent } from './components/finance/finance.component';
+import { StockTakeBarComponent } from './components/stock-take-bar/stock-take-bar.component';
+import { ProductsSaleComponent } from './components/products-sale/products-sale.component';
+import { ConfirmPaymentComponent } from './components/confirm-payment/confirm-payment.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +48,11 @@ import { DataDeleteComponent } from './components/data-delete/data-delete.compon
     SummariesComponent,
     AddStockProductComponent,
     ProductTransferComponent,
-    DataDeleteComponent
+    DataDeleteComponent,
+    FinanceComponent,
+    StockTakeBarComponent,
+    ProductsSaleComponent,
+    ConfirmPaymentComponent
   ],
   imports: [
     BrowserModule,

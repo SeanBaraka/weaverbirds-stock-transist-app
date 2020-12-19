@@ -4,10 +4,10 @@
   <div class="shops-info mgy-2">
     <h5>Your Shops</h5>
     <div class="grid shops-summary mgy-1">
-      <div class="grid-item card card-color actionable" (click)="goToShop(shop)" [class.card-color-pri]="index == 1" [class.card-color-main]="index == 0" [class.card-color-sec]="index == 2" *ngFor="let shop of shops;let index = index">
+      <div class="grid-item card card-color actionable" (click)="goToShop(shop)" [class.card-color-pri]="index % 3 == 1" [class.card-color-main]="index % 3 == 0" [class.card-color-sec]="index % 3 == 2" *ngFor="let shop of shops;let index = index">
         <h5>{{shop.name}}</h5>
         <div class="desc mgy-1">
-          <p>Today's Stock: </p>
+          <p>{{shop.category.name}}</p>
         </div>
       </div>
     </div>

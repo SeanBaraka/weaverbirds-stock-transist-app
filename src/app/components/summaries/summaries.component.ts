@@ -34,7 +34,7 @@ export class SummariesComponent implements OnInit {
   }
 
   getShops(): void {
-    this.stockService.getShops().subscribe((data) => {
+    this.stockService.getShops().subscribe((data: any[]) => {
       this.shops = data;
     });
   }
@@ -58,11 +58,15 @@ export class SummariesComponent implements OnInit {
   }
 
   goToShop(shop: any): void {
-    this.router.navigate(['dashboard/stock'], {
-      state: {
-        shop
-      }
-    });
+    if (shop.category.name === 'Bar') {
+      this.router.navigate(['dashboard/stock-bar']);
+    } else {
+      this.router.navigate(['dashboard/stock'], {
+        state: {
+          shop
+        }
+      });
+    }
   }
 
   printDayReport(id: number): void {

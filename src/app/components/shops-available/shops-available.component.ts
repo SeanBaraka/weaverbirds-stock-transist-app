@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder} from "@angular/forms";
+import {FormBuilder, Validators} from "@angular/forms";
 import {StockDataService} from "../../services/stock-data.service";
 
 @Component({
@@ -9,15 +9,19 @@ import {StockDataService} from "../../services/stock-data.service";
 })
 export class ShopsAvailableComponent implements OnInit {
   shops: any[] = [];
+  shopCategories: any[] = [];
+
   shopForm = this.fb.group({
-    name: [''],
-    desc: ['']
+    name: ['', Validators.required],
+    desc: [''],
+    shopCategory: ['', Validators.required]
   });
 
   constructor(private fb: FormBuilder, private stockService: StockDataService) { }
 
   ngOnInit(): void {
     this.shopsList();
+    this.getShopCategories();
   }
 
   shopsList(): void {
@@ -26,10 +30,17 @@ export class ShopsAvailableComponent implements OnInit {
     });
   }
 
+  getShopCategories(): void {
+    this.stockService.getShopCategories().subscribe((response) => {
+      this.shopCategories = response;
+    });
+  }
+
   addShop(): void {
     this.stockService.addShop(this.shopForm.value).subscribe((response) => {
       if (response) {
-        this.shopsList();
+        this.shopForm.reset();
+        this.ngOnInit();
       }
     });
   }

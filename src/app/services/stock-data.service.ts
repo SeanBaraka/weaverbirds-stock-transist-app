@@ -44,6 +44,11 @@ export class StockDataService {
     return this.http.post(`${environment.apiBaseUrl}products/inventory/add`, product);
   }
 
+  /** get shop categories */
+  getShopCategories(): Observable<any> {
+    return this.http.get(`${environment.apiBaseUrl}shops/categories`);
+  }
+
   /** an attempt to close the desired shop */
   closeShop(shopId: number, stockInfo: any, openingAmount: any, closingAmount: any, addedStockAmount: any): Observable<any> {
     return this.http.post(

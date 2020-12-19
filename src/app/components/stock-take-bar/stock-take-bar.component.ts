@@ -5,24 +5,20 @@ import {MatDialog} from "@angular/material/dialog";
 import {OpenShopComponent} from "../open-shop/open-shop.component";
 import {CloseShopComponent} from "../close-shop/close-shop.component";
 import {Product} from "../../interfaces/product";
-import {AddStockProductComponent} from "../add-stock-product/add-stock-product.component";
-import {ProductTransferComponent} from "../product-transfer/product-transfer.component";
-import {DataDeleteComponent} from "../data-delete/data-delete.component";
-import {ProductsSaleComponent} from "../products-sale/products-sale.component";
 
 @Component({
-  selector: 'app-stock-management',
-  templateUrl: './stock-management.component.html',
-  styleUrls: ['./stock-management.component.sass']
+  selector: 'app-stock-stake-bar',
+  templateUrl: './stock-take-bar.component.html',
+  styleUrls: ['./stock-take-bar.component.sass']
 })
-export class StockManagementComponent implements OnInit {
+export class StockTakeBarComponent implements OnInit {
   shopOpen = false;
   shopClosed = false;
   shopId: any;
   shopName: any;
   openingStock: any;
   amount: any;
-  stockProducts: any[] = [];
+  stockProducts: Array<Product> = [];
 
   constructor(private fb: FormBuilder, private stockData: StockDataService, private dialog: MatDialog) { }
 
@@ -31,24 +27,20 @@ export class StockManagementComponent implements OnInit {
   });
   shops: any[] = [];
 
-  // selected shop from the dashboard summaries
-  selectedShop: any;
-  loading = false;
-
   ngOnInit(): void {
-    this.selectedShop = history.state.shop;
-    this.getShop(this.selectedShop.name);
     this.getShops();
   }
 
-  getShop(shop?: string): void {
-    if (shop != null && shop !== '') {
+  getShop(shopName?: string): void {
+    if (shopName != null && shopName !== '') {
       const shopInfo = {
-        shop
+        shopName
       };
       this.stockData.getShopData(shopInfo).subscribe((shopData: any) => {
         this.shopId = shopData.shop.id;
         this.shopName = shopData.shop.name;
+        this.shopOpen = shopData.shop.openStatus;
+        this.shopClosed = !this.shopOpen;
         this.openingStock = shopData.shop.openingStock;
         this.amount = shopData.shop.amount;
         this.getShopStock();
@@ -57,6 +49,8 @@ export class StockManagementComponent implements OnInit {
       this.stockData.getShopData(this.shopSearch.value).subscribe((data: any) => {
       this.shopId = data.shop.id;
       this.shopName = data.shop.name;
+      this.shopOpen = data.shop.openStatus;
+      this.shopClosed = !this.shopOpen;
       this.openingStock = data.shop.openingStock;
       this.amount = data.shop.amount;
       this.getShopStock();
@@ -65,12 +59,9 @@ export class StockManagementComponent implements OnInit {
   }
 
   getShopStock(): void {
-    this.loading = true;
-    this.stockData.getShopStock(this.selectedShop.id).subscribe((products) => {
-      if (products) {
-        this.loading = false;
-        this.stockProducts = products;
-      }
+    const shortDate = new Date(Date.now()).toISOString().split('T')[0];
+    this.stockData.getDaysStock(this.shopId, shortDate).subscribe((res: any[]) => {
+      this.stockProducts = res;
     });
   }
 
@@ -90,15 +81,17 @@ export class StockManagementComponent implements OnInit {
     });
   }
 
-  launchSellModal(): void {
-    this.dialog.open(ProductsSaleComponent, {
-      width: '90%',
+  closeShopModal(): void {
+    this.dialog.open(CloseShopComponent, {
+      width: '680px',
       height: '90vh',
       disableClose: true,
       data: {shopId: this.shopId, stockProducts: this.stockProducts, shopName: this.shopName}
     }).afterClosed().subscribe((data) => {
       if (data !== 'true') {
         this.getShopStock();
+        this.shopOpen = !this.shopOpen;
+        this.shopClosed = !this.shopClosed;
       }
     });
   }
@@ -122,51 +115,18 @@ export class StockManagementComponent implements OnInit {
   }
 
   getShops(): void {
-    this.stockData.getShops().subscribe((data) => {
-      this.shops = data;
+    let shopsThatAreBars = [];
+    this.stockData.getShops().subscribe((data: any[]) => {
+      data.forEach((shop) => {
+        if (shop.category.name.toLowerCase() === 'bar') {
+          shopsThatAreBars = [...shopsThatAreBars, shop];
+        }
+      });
+      this.shops = shopsThatAreBars;
     });
   }
 
-  launchAddModal(): void {
-    this.dialog.open(AddStockProductComponent, {
-      width: '680px',
-      height: '300px',
-      data: {
-        shopId: this.selectedShop.id
-      }
-    }).afterClosed().subscribe((data) => {
-      if (data === 'true') {
-        this.getShopStock();
-      }
-    });
-  }
+  addStock(): void {
 
-  transferProduct(product): void {
-    this.dialog.open(ProductTransferComponent, {
-      width: '680px',
-      height: '250px',
-      data: {
-        shopId: this.selectedShop.id,
-        product
-      }
-    }).afterClosed().subscribe((data) => {
-      if (data === 'true') {
-        this.getShopStock();
-      }
-    });
-  }
-
-  deleteProduct(id: number): void {
-    this.dialog.open(DataDeleteComponent, {
-      width: '680px',
-      height: '250px',
-      data: {
-        productId: id
-      }
-    }).afterClosed().subscribe((data) => {
-      if (data === 'true') {
-        this.getShopStock();
-      }
-    });
   }
 }

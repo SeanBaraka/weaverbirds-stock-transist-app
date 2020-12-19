@@ -1,0 +1,92 @@
+<div class="container">
+  <h5 class="sub-heading mgy-1">Order Number: #234321</h5>
+  <h6 class="sub-heading mgy-1">Serving You: Sean Baraka</h6>
+  <div class="mgy-1">
+    <form [formGroup]="searchProduct" (submit)="productSearch()">
+      <div class="form-controls">
+        <input type="text" placeholder="Enter product code" id="code" formControlName="serialNumber">
+      </div>
+    </form>
+  </div>
+  <div class="flexed">
+    <div class="sale-items-container">
+      <div class="card-list mgy-2">
+        <div class="card-list-item table-header">
+          <div class="bold">Product</div>
+          <div class="bold">Qty</div>
+          <div class="bold">@</div>
+          <div class="bold">Total</div>
+        </div>
+      </div>
+      <div class="table-data" style="height: 230px;max-height: 230px">
+         <div class="card-list-item table-header">
+            <div class="item">FANTA ORANGE 300ML</div>
+            <div class="item">3</div>
+            <div class="item">40</div>
+            <div class="item">120</div>
+          </div>
+      </div>
+      <div class="sub-totals">
+        <table style="text-align: left">
+          <tbody>
+            <tr>
+              <th class="small">Tax</th>
+              <td class="small">:</td>
+              <td><h4>14% VAT</h4></td>
+            </tr>
+            <tr>
+              <th class="small">TOTAL</th>
+              <td class="small">:</td>
+              <td><h4>Ksh. 120</h4></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="payment-options-container">
+      <div class="mgy-1">
+        <form [formGroup]="completeSale" (submit)="finalizeSale()">
+          <div class="form-controls">
+            <div class="form-input-group flexed flexed-column">
+              <label for="amount" class="small bold mgy-1">Total Amount</label>
+              <input type="text" formControlName="amount" id="amount" value="120" readonly>
+            </div>
+          </div>
+        </form>
+        <h5 class="mgy-2">Payment Methods</h5>
+        <div class="the-payment-methods mgy-1">
+          <div class="grid grid-center">
+            <div class="grid-item" (click)="cashPayment()">
+              <img src="assets/dollar.png" alt="">
+              <p class="smallest bold">Cash</p>
+            </div>
+            <div class="grid-item">
+              <img src="assets/mpesa.png" (click)="mobilePayment()" alt="">
+              <p class="smallest bold">Mobile</p>
+            </div>
+            <div class="grid-item">
+              <img src="assets/split.png" alt="">
+              <p class="smallest bold">Split Payment</p>
+            </div>
+          </div>
+        </div>
+        <div class="payment-complete mgy-2">
+          <div class="cash-payment" *ngIf="paymentMethod.cash">
+            <div class="flexed flexed-column">
+              <p class="smallest mgy-1 bold">Received Amount</p>
+              <input type="number" min="1" class="short">
+              <div class="mgy-1">
+                <p class="small">Balance: <span class="bold">Ksh. 80</span></p>
+              </div>
+            </div>
+          </div>
+          <div class="cash-payment" *ngIf="paymentMethod.mobile">
+            <div class="flexed flexed-column mgy-1">
+              <button class="button button-text button-info bordered" (click)="confirmMobilePayment()">Confirm Payment</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
