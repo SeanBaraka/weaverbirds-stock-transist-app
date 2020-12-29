@@ -2,9 +2,12 @@
   <h5 class="sub-heading mgy-1">Order Number: #234321</h5>
   <h6 class="sub-heading mgy-1">Serving You: Sean Baraka</h6>
   <div class="mgy-1">
-    <form [formGroup]="searchProduct" (submit)="productSearch()">
+    <form [formGroup]="searchProduct">
       <div class="form-controls">
-        <input type="text" placeholder="Enter product code" id="code" formControlName="serialNumber">
+        <input type="text" list="products" placeholder="Enter product code" id="code" formControlName="serialNumber" (change)="productSearch()">
+        <datalist id="products">
+          <option value="{{product.name}}" *ngFor="let product of data.stockProducts">{{product.name}}</option>
+        </datalist>
       </div>
     </form>
   </div>
@@ -19,11 +22,11 @@
         </div>
       </div>
       <div class="table-data" style="height: 230px;max-height: 230px">
-         <div class="card-list-item table-header">
-            <div class="item">FANTA ORANGE 300ML</div>
-            <div class="item">3</div>
-            <div class="item">40</div>
-            <div class="item">120</div>
+         <div class="card-list-item table-header padded-list-item" *ngFor="let cartItem of cartProducts">
+            <div class="item">{{cartItem.name}}</div>
+            <div class="item">{{cartItem.quantity}}</div>
+            <div class="item">{{cartItem.sellingPrice}}</div>
+            <div class="item">{{cartItem.sellingPrice * cartItem.quantity}}</div>
           </div>
       </div>
       <div class="sub-totals">
@@ -37,7 +40,7 @@
             <tr>
               <th class="small">TOTAL</th>
               <td class="small">:</td>
-              <td><h4>Ksh. 120</h4></td>
+              <td><h4>Ksh. {{cartTotal}}</h4></td>
             </tr>
           </tbody>
         </table>
@@ -49,7 +52,7 @@
           <div class="form-controls">
             <div class="form-input-group flexed flexed-column">
               <label for="amount" class="small bold mgy-1">Total Amount</label>
-              <input type="text" formControlName="amount" id="amount" value="120" readonly>
+              <input type="text" formControlName="amount" id="amount" value="{{cartTotal}}" readonly>
             </div>
           </div>
         </form>
@@ -60,13 +63,13 @@
               <img src="assets/dollar.png" alt="">
               <p class="smallest bold">Cash</p>
             </div>
-            <div class="grid-item">
-              <img src="assets/mpesa.png" (click)="mobilePayment()" alt="">
+            <div class="grid-item" (click)="mobilePayment()" >
+              <img src="assets/mpesa.png" alt="">
               <p class="smallest bold">Mobile</p>
             </div>
-            <div class="grid-item">
-              <img src="assets/split.png" alt="">
-              <p class="smallest bold">Split Payment</p>
+            <div class="grid-item" (click)="invoicePayment()">
+              <img src="assets/invoice.svg" width="20" alt="">
+              <p class="smallest bold">Invoice</p>
             </div>
           </div>
         </div>
@@ -74,15 +77,36 @@
           <div class="cash-payment" *ngIf="paymentMethod.cash">
             <div class="flexed flexed-column">
               <p class="smallest mgy-1 bold">Received Amount</p>
-              <input type="number" min="1" class="short">
+              <form [formGroup]="cashForm">
+                <input type="number" formControlName="cashReceived" (change)="receivePayment()" min="1" class="short">
+              </form>
               <div class="mgy-1">
-                <p class="small">Balance: <span class="bold">Ksh. 80</span></p>
+                <p class="small">Balance: <span class="bold">Ksh. {{cashBalance}}</span></p>
               </div>
             </div>
           </div>
           <div class="cash-payment" *ngIf="paymentMethod.mobile">
             <div class="flexed flexed-column mgy-1">
               <button class="button button-text button-info bordered" (click)="confirmMobilePayment()">Confirm Payment</button>
+            </div>
+          </div>
+          <div class="cash-payment" *ngIf="paymentMethod.invoice">
+            <div class="flexed flexed-column">
+              <form [formGroup]="invoiceForm">
+                <div class="form-controls mgy-1 flexed flexed-column">
+                  <label for="cname" class="smallest bold">Customer Name</label>
+                  <input type="text" formControlName="customerName" id="cname">
+                </div>
+                <div class="form-controls mgy-1 flexed flexed-column">
+                  <label for="tel" class="smallest bold">Tel: Number</label>
+                  <input type="text" formControlName="customerTel" id="tel">
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="mgy-2">
+            <div class="flexed flexed-column mgy-1">
+              <button class="button button-tertiary" (click)="finalizeSale()" [class.disabled]="cashForm.invalid" mat-dialog-close="true">Finalise Sale</button>
             </div>
           </div>
         </div>

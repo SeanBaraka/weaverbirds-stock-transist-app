@@ -1,24 +1,34 @@
 <div class="main-grid">
+  <div class="img-bg">
+    <img src="assets/bg.svg" alt="">
+  </div>
   <div class="container" *ngIf="!loading && !errorConnecting">
     <div class="mgy-1">
-      <img src="assets/weaverlogo.svg" width="175" alt="">
+      <img src="assets/weaverlogo.svg" width="150" alt="">
     </div>
-    <h3>Hello, proceed to login</h3>
     <div class="form mgy-2">
       <form [formGroup]="authLogin" class="form" (submit)="loginAttempt()">
-        <div class="form-input">
-          <label for="username">Enter your username</label>
-          <input type="text" formControlName="username" id="username">
+        <div class="flexed input-icon-box flexed-align-center">
+          <span class="icon">
+            <img src="assets/avatar.svg" width="25" alt="">
+          </span>
+          <div class="input-box mgl-1">
+            <input type="text" formControlName="username" placeholder="Username / Email" id="username">
+          </div>
         </div>
-        <div class="form-input mgy-1">
-          <label for="password">Enter your password</label>
-          <input type="password" formControlName="password" id="password">
+        <div class="flexed input-icon-box mgy-2 flexed-align-center">
+          <span class="icon">
+            <img src="assets/padlock.svg" width="25" alt="">
+          </span>
+          <div class="input-box mgl-1">
+            <input type="password" formControlName="password" placeholder="Your password" id="password">
+          </div>
         </div>
-        <div class="form-input mgy-1" *ngIf="errorLogin">
-          <label class="text-danger">{{errorLogin.error}}</label>
+        <div class="mgy-1 smallest text-danger center">
+          <span>{{errorLogin.error}}</span>
         </div>
-        <div class="form-input mgy-2">
-          <button class="button-info">Sign in</button>
+        <div class="form-input mgy-2 center">
+          <button class="button-sec short button-small rounded">Sign in</button>
         </div>
       </form>
     </div>

@@ -18,6 +18,26 @@
     <!-- Items in stock -->
     <div class="stock-items-container">
       <h5 class="sub-heading">Stock Information summary</h5>
+      <div class="container mgy-2" *ngIf="stockProducts.length > 0">
+        <div class="grid shops-summary mgy-1">
+          <div class="grid-item card card-color card-flat actionable">
+            <img src="assets/stocks.svg" width="35" alt="">
+            <h5 class="mgy-1">Total Inventory</h5>
+            <div class="desc mgy-1">
+              <span class="small mgy-1">As at {{todayDate}}</span>
+              <h2 class="mgy-1">Ksh. {{getStockTotalAmount().toLocaleString()}}</h2>
+            </div>
+          </div>
+          <div class="grid-item card card-color card-flat actionable">
+            <img src="assets/bank.svg" width="35" alt="">
+            <h5 class="mgy-1">Total Sales</h5>
+            <div class="desc mgy-1">
+              <span class="small mgy-1">As at {{todayDate}}</span>
+              <h2 class="mgy-1">Ksh. {{getTotalSalesAmount().toLocaleString()}}</h2>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="card-list mgy-1" *ngIf="stockProducts.length > 0">
         <div class="card-list-item table-header">
           <div class="bold">Product</div>
@@ -36,6 +56,24 @@
       </div>
       <div *ngIf="!loading">
         <div class="table-data" *ngIf="stockProducts.length > 0;else no_products">
+          <div class="flexed flexed-end" style="margin: 1rem 0">
+            <div class="search-input">
+              <label for="search-field" style="font-size: 12px">Search</label>
+              <input type="search" name="search-field" class="mgl-1" id="search-field" (input)="filterProducts($event.target.value)">
+            </div>
+            <div class="print-option">
+              <button class="button button-text" (click)="printInventory(true)">
+                <span><img src="assets/download.svg" width="10" alt="" style="filter: invert(0)"></span>
+                Print Report
+              </button>
+            </div>
+            <div class="print-option mgl-2">
+              <button class="button button-text" (click)="printInventory(false)">
+                <span><img src="assets/download.svg" width="10" alt="" style="filter: invert(0)"></span>
+                Products list
+              </button>
+            </div>
+          </div>
           <div class="card-list-item data-set" *ngFor="let product of stockProducts; let index = index">
 <!--          <div class="small">{{vehicleInfo.date}}</div>-->
           <div><span class="small">{{product.name}}</span></div>
@@ -43,11 +81,15 @@
           <div><span class="">{{product.quantity}}</span></div>
           <div class="smallest bold flexed">
             <div class="move center">
-              <button class="button button-image" (click)="transferProduct(product)"><img src="assets/swap.svg" width="15" alt=""></button>
+              <button class="button button-image" (click)="transferProduct(product)"><img src="assets/swap.svg" width="10" alt=""></button>
               <span class="smallest">Transfer</span>
             </div>
-            <div class="remove mgl-1 center">
-              <button class="button button-image" (click)="deleteProduct(product.id)"><img src="assets/trash.svg" width="15" alt=""></button>
+            <div class="move center mgl-2">
+              <button class="button button-image" (click)="updateProduct(product)"><img src="assets/add_product.svg" width="10" alt=""></button>
+              <span class="smallest">Update</span>
+            </div>
+            <div class="remove center">
+              <button class="button button-image" (click)="deleteProduct(product.id)"><img src="assets/trash.svg" width="10" alt=""></button>
               <span class="smallest">Delete</span>
             </div>
           </div>
@@ -63,16 +105,6 @@
             <button class="button button-text text-info bordered" (click)="launchAddModal()">Insert Products</button>
           </div>
         </ng-template>
-        <table class="app-table" *ngIf="stockProducts.length > 0">
-          <tbody>
-            <tr>
-              <td></td>
-              <th>Total</th>
-              <th>{{getStockTotal().toLocaleString()}}</th>
-              <th>Ksh. {{getStockTotalAmount().toLocaleString()}}</th>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
 </div>

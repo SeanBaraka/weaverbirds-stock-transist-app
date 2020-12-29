@@ -38,6 +38,11 @@ export class AuthService {
     return jwt.decodeToken(token);
   }
 
+  /** get token */
+  getToken(): string {
+    return localStorage.getItem('appId');
+  }
+
   /** logout user */
   removeUser(): void {
     localStorage.removeItem('appId');

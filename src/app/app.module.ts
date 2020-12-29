@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { SidemenuComponent } from './components/sidemenu/sidemenu.component';
 import { StockManagementComponent } from './components/stock-management/stock-management.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { ProductsComponent } from './components/products/products.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDialogModule} from "@angular/material/dialog";
@@ -28,6 +28,7 @@ import { FinanceComponent } from './components/finance/finance.component';
 import { StockTakeBarComponent } from './components/stock-take-bar/stock-take-bar.component';
 import { ProductsSaleComponent } from './components/products-sale/products-sale.component';
 import { ConfirmPaymentComponent } from './components/confirm-payment/confirm-payment.component';
+import {AuthInterceptor} from "./interceptors/auth.interceptor";
 
 @NgModule({
   declarations: [
@@ -62,7 +63,9 @@ import { ConfirmPaymentComponent } from './components/confirm-payment/confirm-pa
     BrowserAnimationsModule,
     MatDialogModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -39,6 +39,11 @@ export class StockDataService {
     return this.http.get(`${environment.apiBaseUrl}stock/store/${shopId}`);
   }
 
+  /** remove stock item */
+  removeFromShop(itemId: number, shopId: number): Observable<any> {
+    return this.http.post(`${environment.apiBaseUrl}stock/store/${shopId}`, {itemId});
+  }
+
   /** add new product to the selected store */
   addNewProduct(product: any): Observable<any> {
     return this.http.post(`${environment.apiBaseUrl}products/inventory/add`, product);
