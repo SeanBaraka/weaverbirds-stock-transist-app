@@ -95,7 +95,10 @@
               <form [formGroup]="invoiceForm">
                 <div class="form-controls mgy-1 flexed flexed-column">
                   <label for="cname" class="smallest bold">Customer Name</label>
-                  <input type="text" formControlName="customerName" id="cname">
+                  <input type="text" formControlName="customerName" id="cname" list="customers" (change)="updateTel($event.target.value)">
+                  <datalist id="customers">
+                    <option *ngFor="let customer of customers" [value]="customer.name"></option>
+                  </datalist>
                 </div>
                 <div class="form-controls mgy-1 flexed flexed-column">
                   <label for="tel" class="smallest bold">Tel: Number</label>
@@ -106,7 +109,7 @@
           </div>
           <div class="mgy-2">
             <div class="flexed flexed-column mgy-1">
-              <button class="button button-tertiary" (click)="finalizeSale()" [class.disabled]="cashForm.invalid" mat-dialog-close="true">Finalise Sale</button>
+              <button class="button button-tertiary" (click)="finalizeSale()" [class.disabled]="cashForm.invalid && invoiceForm.invalid" mat-dialog-close="true">Finalise Sale</button>
             </div>
           </div>
         </div>

@@ -107,7 +107,7 @@ export class StockManagementComponent implements OnInit {
       height: '540px',
       data: {shopId: this.selectedShop.id, stockProducts: this.stockProducts, shopName: this.selectedShop.name}
     }).afterClosed().subscribe((data) => {
-      if (data !== 'true') {
+      if (data) {
         this.getShopStock();
       }
     });

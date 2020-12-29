@@ -17,4 +17,8 @@ export class ProductSaleService {
   getSales(shopId: number): Observable<any> {
     return this.http.get(`${environment.apiBaseUrl}shops/${shopId}/sales/total/`);
   }
+
+  getCustomers(): Observable<any> {
+    return this.http.get(`${environment.apiBaseUrl}customers/list`);
+  }
 }

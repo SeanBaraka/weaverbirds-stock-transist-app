@@ -23,6 +23,8 @@ export class ProductsSaleComponent implements OnInit {
     amount: ['', Validators.required]
   });
 
+  customers: any[] = [];
+
   paymentMethod = {
     cash: false,
     mobile: false,
@@ -45,12 +47,20 @@ export class ProductsSaleComponent implements OnInit {
   });
   invoiceForm = this.fb.group({
     number: [''],
-    customerName: ['']
+    customerName: ['', Validators.required],
+    customerTel: ['', Validators.required]
   });
 
   ngOnInit(): void {
     this.paymentMethod.cash = true;
     this.paymentMethod.mobile = false;
+    this.retrieveCustomers();
+  }
+
+  retrieveCustomers(): void {
+    this.saleService.getCustomers().subscribe((response) => {
+      this.customers = response;
+    });
   }
 
   productSearch(): void {
@@ -96,14 +106,21 @@ export class ProductsSaleComponent implements OnInit {
   finalizeSale(): void {
     const receiptNumber = (Math.random() * 10000).toFixed(0);
     let paymentMethod;
+    let customer;
+    let transactionId;
     // check the payment method options
     switch (this.paymentMethod.cash) {
-      case false: {
-        paymentMethod = 'MOBILE';
+      case true: {
+        paymentMethod = 'CASH';
         break;
       }
-      default: {
-        paymentMethod = 'CASH';
+    }
+
+    switch (this.paymentMethod.mobile) {
+      case true: {
+        paymentMethod = 'MOBILE';
+        transactionId = 'OKLNMDKDK';
+        customer = 'customer';
         break;
       }
     }
@@ -111,18 +128,29 @@ export class ProductsSaleComponent implements OnInit {
     switch (this.paymentMethod.invoice) {
       case true: {
         paymentMethod = 'INVOICE';
+        customer = this.invoiceForm.value;
         break;
       }
     }
+
     const cart = this.cartProducts;
     const sellAmount = this.cartTotal;
-    const amountReceived = this.cashForm.get('cashReceived').value;
+    const amountTendered = this.cashForm.get('cashReceived').value;
+    const balanceToReturn = amountTendered - sellAmount;
+    let amountReceived = 0;
+
+    if (balanceToReturn >= 0) {
+      amountReceived = sellAmount;
+    }
+
     const sellOrder = {
       items: cart,
       totalAmount: sellAmount,
       amountReceived,
       receiptNumber,
-      paymentMethod
+      paymentMethod,
+      transactionId,
+      customer
     };
     const shopId = this.data.shopId;
     this.saleService.makeSale(shopId, sellOrder).subscribe((response) => {
@@ -166,7 +194,7 @@ export class ProductsSaleComponent implements OnInit {
             [
               { text: `Date - ${new Date(Date.now()).toLocaleDateString()}`, style: 'textRegular'},
               {
-          text: `Receipt Number #${this.receiptNumber}`,
+          text: this.paymentMethod.invoice ? `INVOICE Number #${this.receiptNumber}` : `Receipt Number #${this.receiptNumber}`,
           style: 'textRegular'
         },
               {text: 'Weaverbirds Limited', style: 'textRegular'},
@@ -182,14 +210,14 @@ export class ProductsSaleComponent implements OnInit {
           ]
         },
         {
-          text: 'Cash Sale Details',
+          text: this.paymentMethod.invoice ? 'INVOICE SALE' : 'Cash Sale Details',
           bold: true,
           style: 'subHeading'
         },
         {
           table: {
             headerRows: 1,
-            widths: ['auto', 'auto', 'auto', 'auto'],
+            widths: [this.paymentMethod.invoice ? 400 : 'auto', 'auto', 'auto', 'auto'],
             heights: (row) => {
               if (row === 0) {
                 return 0;
@@ -211,8 +239,8 @@ export class ProductsSaleComponent implements OnInit {
               ],
               [
                 {
-                  text: 'Amount Received', fontSize: 8, bold: true, colspan: 6
-                }, {}, {}, this.cashForm.get('cashReceived').value.toFixed(2)
+                  text: this.paymentMethod.invoice ? '' : 'Amount Received', fontSize: 8, bold: true, colspan: 6
+                }, {}, {}, this.paymentMethod.invoice ? '' : parseInt(this.cashForm.get('cashReceived').value, 2).toFixed(2)
               ],
               [
                 {
@@ -261,5 +289,12 @@ export class ProductsSaleComponent implements OnInit {
     this.paymentMethod.invoice = true;
     this.paymentMethod.cash = false;
     this.paymentMethod.mobile = false;
+  }
+
+  updateTel(name: string): void {
+    const cus = this.customers.find((c) => c.name === name);
+    if (cus != null) {
+      this.invoiceForm.get('customerTel').setValue(cus.telephone);
+    }
   }
 }
