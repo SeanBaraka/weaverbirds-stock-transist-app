@@ -15,15 +15,16 @@
     &-links
       list-style-type: none
       &-item
-        margin: .95em 0
+        margin: .95em 1.5em
         padding: .5em 0
         font-size: 12px
+        font-weight: 600
         &.active
           background: $blue-violet
           color: #ffffff
           border-top-right-radius: 20px
           border-bottom-right-radius: 20px
-          padding: .5em 1.5em
+          padding: .5em 2.5em
           margin: .95em -2.5em
           width: 85%
 
@@ -38,3 +39,11 @@
       font-weight: 500
       position: absolute
       bottom: 0
+
+details 
+  summary 
+    font-weight: 600
+    color: #888888
+    &:active,&::selection,&:enabled
+      outline: none
+      border: none
