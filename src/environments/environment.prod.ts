@@ -1,0 +1,6 @@
+export const environment = {
+  production: true,
+  apiBaseUrl: 'http://192.168.0.121:3000/',
+  recipients: ['+254727275739']
+  // apiBaseUrl: 'http://localhost:3000' and some other values
+};
