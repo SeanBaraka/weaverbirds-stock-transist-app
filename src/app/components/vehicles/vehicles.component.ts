@@ -24,6 +24,7 @@ export class VehiclesComponent implements OnInit {
     modelType: ['', Validators.required],
   });
 
+  // an array of vehicles;
   vehicles: any[] = [];
   inRouteVehicles: any[] = [];
   vehicleReports: any[] = [];

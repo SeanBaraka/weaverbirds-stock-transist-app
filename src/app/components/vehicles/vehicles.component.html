@@ -32,10 +32,10 @@
   <div class="vehicle-list">
     <h5 class="sub-heading">Available Vehicles</h5>
     <div class="vehicles grid">
-      <div class="vehicle grid-item"  *ngFor="let veh of vehicles;let index = index" (click)="assignRouteDriver(veh.plateNumber)">
+      <div class="vehicle grid-item"  *ngFor="let vehicle of vehicles;let index = index" (click)="assignRouteDriver(vehicle.plateNumber)">
         <div class="card actionable card-color" [class.card-color-pri]="index == 0" [class.card-color-main]="index == 1" [class.card-color-sec]="index == 2">
-          <h5 class="sub-heading">{{veh.plateNumber}}</h5>
-          <p class="mgy-1 smallest">{{veh.modelType}}</p>
+          <h5 class="sub-heading">{{vehicle.plateNumber}}</h5>
+          <p class="mgy-1 smallest">{{vehicle.modelType}}</p>
         </div>
       </div>
     </div>

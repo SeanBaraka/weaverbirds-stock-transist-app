@@ -29,6 +29,7 @@ import { StockTakeBarComponent } from './components/stock-take-bar/stock-take-ba
 import { ProductsSaleComponent } from './components/products-sale/products-sale.component';
 import { ConfirmPaymentComponent } from './components/confirm-payment/confirm-payment.component';
 import {AuthInterceptor} from "./interceptors/auth.interceptor";
+import { ConfigSettingsComponent } from './components/config-settings/config-settings.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import {AuthInterceptor} from "./interceptors/auth.interceptor";
     FinanceComponent,
     StockTakeBarComponent,
     ProductsSaleComponent,
-    ConfirmPaymentComponent
+    ConfirmPaymentComponent,
+    ConfigSettingsComponent
   ],
   imports: [
     BrowserModule,
