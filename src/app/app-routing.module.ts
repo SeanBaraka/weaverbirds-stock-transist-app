@@ -12,6 +12,7 @@ import {AuthComponent} from "./components/auth/auth.component";
 import {SummariesComponent} from "./components/summaries/summaries.component";
 import {FinanceComponent} from "./components/finance/finance.component";
 import {StockTakeBarComponent} from "./components/stock-take-bar/stock-take-bar.component";
+import { ConfigSettingsComponent } from './components/config-settings/config-settings.component';
 
 const routes: Routes = [
   { path: 'auth', component: AuthComponent },
@@ -26,7 +27,8 @@ const routes: Routes = [
       { path: 'vehicles', component: VehiclesComponent },
       { path: 'routes', component: VehicleRoutesComponent },
       { path: 'personnel', component: PersonnelComponent },
-      { path: 'finance', component: FinanceComponent }
+      { path: 'finance', component: FinanceComponent },
+      { path: 'settings', component: ConfigSettingsComponent }
     ] },
 ];
 

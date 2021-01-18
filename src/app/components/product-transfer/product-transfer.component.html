@@ -20,7 +20,10 @@
             <div class="form-controls mgl-1">
               <label for="shopName" class="small">Destination Shop</label>
               <div class="form-input">
-                <input type="text" id="shopName" formControlName="shopName" placeholder="Umoja">
+                <input type="text" id="shopName" formControlName="shopName" placeholder="Umoja" list="shops">
+                <datalist id="shops">
+                  <option *ngFor="let shop of availableShops" value="{{shop.id}}">{{shop.name}}</option>
+                </datalist>
               </div>
             </div>
           </div>

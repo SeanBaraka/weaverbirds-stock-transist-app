@@ -15,6 +15,11 @@ export class ProductsManagementService {
     return this.http.post(`${environment.apiBaseUrl}products/new/`, productData);
   }
 
+  /** transfer products from shop to shop */
+  transferProducts(productData: any): Observable<any> {
+    return this.http.post(`${environment.apiBaseUrl}stock/store/transfer`, productData);
+  }
+
   /** retrieves a list of all products from the database */
   listProducts(): Observable<any> {
     return this.http.get(`${environment.apiBaseUrl}products`);
