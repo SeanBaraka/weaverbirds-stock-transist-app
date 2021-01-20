@@ -20,6 +20,10 @@ export class AuthService {
     return false;
   }
 
+  registerUser(registrationData: any): Observable<any> {
+    return this.http.post(`${environment.apiBaseUrl}auth/register`, registrationData)
+  }
+
   /** attempt login */
   authenticate(userData: any): Observable<any> {
     return this.http.post(`${environment.apiBaseUrl}auth/login`, userData );
@@ -46,6 +50,16 @@ export class AuthService {
   /** logout user */
   removeUser(): void {
     localStorage.removeItem('appId');
+  }
+
+  /** check wheather a super user exists */
+  checkSuperUser(): Observable<any> {
+    return this.http.get(`${environment.apiBaseUrl}auth/checkadmin`);
+  }
+
+  /** get user roles from the api */
+  getUserRoles(): Observable<any> {
+    return this.http.get(`${environment.apiBaseUrl}auth/roles`);
   }
 
 }

@@ -39,12 +39,23 @@ body
   &-end
     justify-content: end
 
+a.button-text
+  text-decoration: none
+  color: inherit
+  font-weight: 700
+
 button
   font-family: inherit
   border: 1px solid $inactive-color
   padding: .7em 1.5em
   cursor: pointer
-  max-width: 220px
+  max-width: 220px                                                                                                                                                  
+  display: inline-block
+  &:disabled
+    cursor: not-allowed
+    opacity: 50% !important
+    background-color: #4e4e4e !important
+    color: initial !important
   &.button-sec
     max-width: 300px
     width: 150px
@@ -54,6 +65,7 @@ button
     color: #ffffff
     padding: .78em 1.8em
     border: none
+    text-decoration: none
     &:focus
       outline: none
     span
@@ -327,6 +339,13 @@ input
     width: 70px
   &.shorter
     width: 55px
+
+// fieldset and legends, VIKINGS..
+fieldset 
+  border: .5px solid #727272
+  legend 
+    padding: 0 .5em  
+
 
 // modal global settings
 .dialog-footer

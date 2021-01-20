@@ -13,9 +13,14 @@ import {SummariesComponent} from "./components/summaries/summaries.component";
 import {FinanceComponent} from "./components/finance/finance.component";
 import {StockTakeBarComponent} from "./components/stock-take-bar/stock-take-bar.component";
 import { ConfigSettingsComponent } from './components/config-settings/config-settings.component';
+import { SuperuserSetupComponent } from './components/superuser-setup/superuser-setup.component';
+import { AuthLoginComponent } from './components/auth-login/auth-login.component';
 
 const routes: Routes = [
-  { path: 'auth', component: AuthComponent },
+  { path: 'auth', component: AuthComponent, children: [
+    { path: 'register', component: SuperuserSetupComponent },
+    { path: 'login', component: AuthLoginComponent }
+  ] },
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], children: [
       { path: 'products', component: ProductsComponent },

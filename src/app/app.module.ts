@@ -30,6 +30,8 @@ import { ProductsSaleComponent } from './components/products-sale/products-sale.
 import { ConfirmPaymentComponent } from './components/confirm-payment/confirm-payment.component';
 import {AuthInterceptor} from "./interceptors/auth.interceptor";
 import { ConfigSettingsComponent } from './components/config-settings/config-settings.component';
+import { SuperuserSetupComponent } from './components/superuser-setup/superuser-setup.component';
+import { AuthLoginComponent } from './components/auth-login/auth-login.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,9 @@ import { ConfigSettingsComponent } from './components/config-settings/config-set
     StockTakeBarComponent,
     ProductsSaleComponent,
     ConfirmPaymentComponent,
-    ConfigSettingsComponent
+    ConfigSettingsComponent,
+    SuperuserSetupComponent,
+    AuthLoginComponent
   ],
   imports: [
     BrowserModule,

@@ -24,6 +24,6 @@ export class UserLoggedInComponent implements OnInit {
 
   logout(): void {
     this.authService.removeUser();
-    this.router.navigate(['auth']);
+    this.router.navigate(['auth','login']);
   }
 }
