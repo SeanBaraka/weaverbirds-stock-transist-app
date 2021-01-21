@@ -13,7 +13,9 @@ export class ProductTransferComponent implements OnInit {
   transferForm = this.fb.group({
     productId: [''],
     destinationShopId: ['', Validators.required],
-    quantity: ['', Validators.required]
+    sourceShopId: ['', Validators.required],
+    quantity: ['', Validators.required],
+    shopName: ['']
   });
 
   availableShops: any[] = []
@@ -28,6 +30,13 @@ export class ProductTransferComponent implements OnInit {
   ngOnInit(): void {
     this.getAvailableShops();
     this.transferForm.get('productId').setValue(this.transferData.product.id)
+    this.transferForm.get('sourceShopId').setValue(this.transferData.shopId)
+  }
+
+  updateShopId(shopName: string): void {
+    const shop = this.availableShops.find(x => x.name.toLowerCase() == shopName.toLowerCase())
+    this.transferForm.get('destinationShopId').setValue(shop.id)
+    console.log(this.transferForm.value)
   }
 
   getAvailableShops(): void {
@@ -37,9 +46,8 @@ export class ProductTransferComponent implements OnInit {
   }
 
   completeTransfer(): void { 
-    console.log(this.transferForm.value)
-    // this.productManagement.transferProducts(transferInfo).subscribe((response) => {
-    //   console.log(response)
-    // })
+    this.productManagement.transferProducts(this.transferForm.value).subscribe((response) => {
+      console.log(response)
+    })
   }
 }

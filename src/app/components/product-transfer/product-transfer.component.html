@@ -14,15 +14,15 @@
             <div class="form-controls">
               <label for="qty" class="small">No. of Pieces</label>
               <div class="form-input">
-                <input type="number" min="1" class="shorter" id="qty" formControlName="qty" placeholder="2">
+                <input type="number" min="1" class="shorter" id="qty" formControlName="quantity" placeholder="2">
               </div>
             </div>
             <div class="form-controls mgl-1">
               <label for="shopName" class="small">Destination Shop</label>
               <div class="form-input">
-                <input type="text" id="shopName" formControlName="shopName" placeholder="Umoja" list="shops">
+                <input type="text" id="shopName" formControlName="shopName" placeholder="Umoja" list="shops" (change)="updateShopId($event.target.value)">
                 <datalist id="shops">
-                  <option *ngFor="let shop of availableShops" value="{{shop.id}}">{{shop.name}}</option>
+                  <option *ngFor="let shop of availableShops" value="{{shop.name}}"></option>
                 </datalist>
               </div>
             </div>

@@ -17,7 +17,7 @@ export class ProductsManagementService {
 
   /** transfer products from shop to shop */
   transferProducts(productData: any): Observable<any> {
-    return this.http.post(`${environment.apiBaseUrl}stock/store/transfer`, productData);
+    return this.http.post(`${environment.apiBaseUrl}stock/moveproducts`, productData);
   }
 
   /** retrieves a list of all products from the database */
