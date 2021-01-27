@@ -22,25 +22,25 @@
         </div>
       </div>
       <div class="table-data" style="height: 230px;max-height: 230px">
-         <div class="card-list-item table-header padded-list-item" *ngFor="let cartItem of cartProducts">
+         <div class="card-list-item table-header padded-list-item" *ngFor="let cartItem of cartProducts;let index">
             <div class="item">{{cartItem.name}}</div>
-            <div class="item">{{cartItem.quantity}}</div>
-            <div class="item">{{cartItem.sellingPrice}}</div>
+            <div class="item" contenteditable="true" (input)="changeQuantity(cartItem.id, $event.target.innerHTML)">{{cartItem.quantity}}</div>
+            <div class="item" contenteditable="true" (input)="changePrice(cartItem.id, $event.target.innerHTML)">{{cartItem.sellingPrice}}</div>
             <div class="item">{{cartItem.sellingPrice * cartItem.quantity}}</div>
           </div>
       </div>
       <div class="sub-totals">
         <table style="text-align: left">
           <tbody>
-            <tr>
+            <!-- <tr>
               <th class="small">Tax</th>
               <td class="small">:</td>
               <td><h4>14% VAT</h4></td>
-            </tr>
+            </tr> -->
             <tr>
-              <th class="small">TOTAL</th>
+              <th class="small" style="font-size: 15px;">TOTAL</th>
               <td class="small">:</td>
-              <td><h4>Ksh. {{cartTotal}}</h4></td>
+              <td><h4 style="font-size: 32px;">Ksh. {{cartTotal}}</h4></td>
             </tr>
           </tbody>
         </table>
@@ -50,10 +50,11 @@
       <div class="mgy-1">
         <form [formGroup]="completeSale" (submit)="finalizeSale()">
           <div class="form-controls">
-            <div class="form-input-group flexed flexed-column">
+            <!-- <div class="form-input-group flexed flexed-column">
               <label for="amount" class="small bold mgy-1">Total Amount</label>
               <input type="text" formControlName="amount" id="amount" value="{{cartTotal}}" readonly>
-            </div>
+            </div> -->
+            <h1>Paybill No: 4062541</h1>
           </div>
         </form>
         <h5 class="mgy-2">Payment Methods</h5>
@@ -85,7 +86,7 @@
               </div>
             </div>
           </div>
-          <div class="cash-payment" *ngIf="paymentMethod.mobile && checkingStatus == false; else awaitingTransactionStatus">
+          <div class="cash-payment" *ngIf="paymentMethod.mobile == true && checkingStatus == false; else awaitingTransactionStatus">
             <div class="flexed flexed-column mgy-1">
               <button class="button button-text button-info bordered" (click)="confirmMobilePayment()">Confirm Payment</button>
             </div>

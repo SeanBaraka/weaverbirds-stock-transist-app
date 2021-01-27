@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://localhost:3000/',
-  socketUrl: 'http://localhost:3000',
+  apiBaseUrl: 'http://178.32.191.159:3010/',
+  socketUrl: 'http://178.32.191.159:3010/',
   recipients: ['+254727275739']
 };
 

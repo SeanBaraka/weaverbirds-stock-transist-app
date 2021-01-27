@@ -2,6 +2,9 @@
   <h4 class="sub-heading">Transfer product</h4>
   <div class="product-transfer-details mgy-1">
     <div class="form-data">
+      <div class="alert alert-success" *ngIf="outputMessage">
+        {{outputMessage}}
+      </div>
       <form [formGroup]="transferForm" (submit)="completeTransfer()">
         <div class="form-controls mgy-1">
           <div class="form-controls">

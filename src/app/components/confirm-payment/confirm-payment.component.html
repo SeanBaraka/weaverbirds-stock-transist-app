@@ -16,7 +16,7 @@
   </div>
   <div class="flexed mgy-2">
     <div class="confirm">
-      <button class="button-text bordered">Confirm</button>
+      <button class="button-text bordered" (click)="confirmedPayment(transaction.amount)">Confirm</button>
     </div>
     <div class="cancel mgl-1">
       <button class="button-text" mat-dialog-close="true">Cancel</button>

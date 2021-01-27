@@ -2,9 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {StockDataService} from "../../services/stock-data.service";
 import {MatDialog} from "@angular/material/dialog";
-import {OpenShopComponent} from "../open-shop/open-shop.component";
-import {CloseShopComponent} from "../close-shop/close-shop.component";
-import {Product} from "../../interfaces/product";
 import {AddStockProductComponent} from "../add-stock-product/add-stock-product.component";
 import {ProductTransferComponent} from "../product-transfer/product-transfer.component";
 import {DataDeleteComponent} from "../data-delete/data-delete.component";
@@ -44,8 +41,13 @@ export class StockManagementComponent implements OnInit {
   selectedShop: any;
   loading = false;
   todayDate = `${new Date(Date.now()).toLocaleDateString('en-GB')} ${new Date(Date.now()).toLocaleTimeString()}`;
+  simpleShop: boolean;
 
   ngOnInit(): void {
+    if (history.state.simpleShop != null) {
+      this.simpleShop = history.state.simpleShop
+      this.shopOpen = history.state.openStatus
+    }
     this.selectedShop = history.state.shop;
     this.getShop(this.selectedShop.name.toLowerCase());
     this.getShopStock();
@@ -86,20 +88,21 @@ export class StockManagementComponent implements OnInit {
     });
   }
 
-  openShopModal(): void {
-    this.dialog.open(OpenShopComponent, {
-      width: '680px',
-      height: '90vh',
-      disableClose: true,
-      data: {shopId: this.shopId}
-    }).afterClosed().subscribe((data) => {
-      if (data !== 'true') {
-        this.getShop(this.shopSearch.get('shopName').value);
-        // this.getShopStock();
-        // this.shopOpen = !this.shopOpen; // remain true
-        // this.shopClosed = false;
-      }
+  openShop(): void {
+    
+  }
+
+  closeShop(): void {
+    
+  }
+
+  getStockTotal(): number {
+    const totalStock = [];
+    this.stockProducts.forEach((item) => {
+      totalStock.push(item.quantity);
     });
+
+    return totalStock.reduce((a, b) => a + b , 0);
   }
 
   launchSellModal(): void {

@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
 import { ProductsManagementService } from 'src/app/services/products-management.service';
 import { StockDataService } from 'src/app/services/stock-data.service';
 
@@ -20,10 +20,13 @@ export class ProductTransferComponent implements OnInit {
 
   availableShops: any[] = []
 
+  outputMessage: any;
+
   constructor(
     private fb: FormBuilder,
     private productManagement: ProductsManagementService,
     private shopService: StockDataService,
+    private thisDialog: MatDialogRef<ProductTransferComponent>,
     @Inject(MAT_DIALOG_DATA) public transferData: any
   ) { }
 
@@ -47,7 +50,10 @@ export class ProductTransferComponent implements OnInit {
 
   completeTransfer(): void { 
     this.productManagement.transferProducts(this.transferForm.value).subscribe((response) => {
-      console.log(response)
+      this.outputMessage = response.success
+      setTimeout(() => {
+        this.thisDialog.close('true')
+      }, 2000);
     })
   }
 }

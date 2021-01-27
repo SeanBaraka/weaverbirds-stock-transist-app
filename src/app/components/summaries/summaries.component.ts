@@ -59,7 +59,13 @@ export class SummariesComponent implements OnInit {
 
   goToShop(shop: any): void {
     if (shop.category.name === 'Bar') {
-      this.router.navigate(['dashboard/stock-bar']);
+      this.router.navigate(['dashboard/stock'], {
+        state: {
+          shop,
+          simpleShop: true,
+          openStatus: shop.openStatus
+        }
+      });
     } else {
       this.router.navigate(['dashboard/stock'], {
         state: {

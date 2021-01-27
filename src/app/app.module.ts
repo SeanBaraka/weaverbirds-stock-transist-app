@@ -32,6 +32,7 @@ import {AuthInterceptor} from "./interceptors/auth.interceptor";
 import { ConfigSettingsComponent } from './components/config-settings/config-settings.component';
 import { SuperuserSetupComponent } from './components/superuser-setup/superuser-setup.component';
 import { AuthLoginComponent } from './components/auth-login/auth-login.component';
+import { SalesSummariesComponent } from './components/sales-summaries/sales-summaries.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { AuthLoginComponent } from './components/auth-login/auth-login.component
     ConfirmPaymentComponent,
     ConfigSettingsComponent,
     SuperuserSetupComponent,
-    AuthLoginComponent
+    AuthLoginComponent,
+    SalesSummariesComponent
   ],
   imports: [
     BrowserModule,

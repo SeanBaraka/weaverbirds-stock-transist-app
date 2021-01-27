@@ -9,6 +9,7 @@ import {MessageNotificationsService} from "../../services/message-notifications.
 import {environment} from "../../../environments/environment";
 import {ProductSaleService} from "../../services/product-sale.service";
 import { RealTimeDataService } from 'src/app/services/real-time-data.service';
+import { ThrowStmt } from '@angular/compiler';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -17,6 +18,9 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
   styleUrls: ['./products-sale.component.sass']
 })
 export class ProductsSaleComponent implements OnInit {
+  /** a global variable for the amount received */
+  globalSaleAmount: number = 0;
+
   searchProduct = this.fb.group({
     serialNumber: ['', Validators.required]
   });
@@ -31,12 +35,14 @@ export class ProductsSaleComponent implements OnInit {
     mobile: false,
     invoice: false
   };
+
   private receiptNumber: string;
   checkingStatus: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
+    private thisDialog: MatDialogRef<ProductsSaleComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private saleService: ProductSaleService,
     private realTimeService: RealTimeDataService
@@ -72,7 +78,7 @@ export class ProductsSaleComponent implements OnInit {
     const stockedProducts = this.data.stockProducts;
     const searchParam = this.searchProduct.get('serialNumber').value;
     let product = stockedProducts.filter(x => x.serialNumber === searchParam).pop();
-
+    
     if (product == null) {
       product = stockedProducts.filter(x => x.name.toLowerCase() === searchParam.toLowerCase()).pop();
     }
@@ -88,6 +94,18 @@ export class ProductsSaleComponent implements OnInit {
     }
     this.cartTotal = this.computeCartTotal(this.cartProducts);
     this.searchProduct.reset();
+  }
+
+  changeQuantity(index: number, value: any): void {
+    const cartItem = this.cartProducts.find(x => x.id == index)
+    cartItem.quantity = value;
+    this.cartTotal = this.computeCartTotal(this.cartProducts)
+  }
+
+  changePrice(index: number, value: any): void {
+    const cartItem = this.cartProducts.find(x => x.id == index )
+    cartItem.sellingPrice = value;
+    this.cartTotal = this.computeCartTotal(this.cartProducts)
   }
 
   getBalance(): number {
@@ -108,15 +126,17 @@ export class ProductsSaleComponent implements OnInit {
     }
   }
 
-  finalizeSale(): void {
+  finalizeSale(amount?: number, transactionCode?: string): void {
     const receiptNumber = (Math.random() * 10000).toFixed(0);
     let paymentMethod;
     let customer;
     let transactionId;
+    let transactionAmount;
     // check the payment method options
     switch (this.paymentMethod.cash) {
       case true: {
         paymentMethod = 'CASH';
+        // transactionAmount = this.cashForm.get('cashReceived').value
         break;
       }
     }
@@ -124,7 +144,7 @@ export class ProductsSaleComponent implements OnInit {
     switch (this.paymentMethod.mobile) {
       case true: {
         paymentMethod = 'MOBILE';
-        transactionId = 'OKLNMDKDK';
+        transactionId = transactionCode ? transactionCode : "PAKD234KLk";
         customer = 'customer';
         break;
       }
@@ -142,7 +162,7 @@ export class ProductsSaleComponent implements OnInit {
     const sellAmount = this.cartTotal;
     const amountTendered = this.cashForm.get('cashReceived').value;
     const balanceToReturn = amountTendered - sellAmount;
-    let amountReceived = 0;
+    let amountReceived = amount ? amount : 0;
 
     if (balanceToReturn >= 0) {
       amountReceived = sellAmount;
@@ -161,7 +181,7 @@ export class ProductsSaleComponent implements OnInit {
     this.saleService.makeSale(shopId, sellOrder).subscribe((response) => {
       if (response) {
         this.receiptNumber = response.receiptNumber;
-        this.printReceipt();
+        this.printReceipt(this.paymentMethod.cash ? this.cashForm.get('cashReceived').value : amount);
       }
     });
   }
@@ -172,39 +192,45 @@ export class ProductsSaleComponent implements OnInit {
     const paymentInfo = {
       amount: this.cartTotal
     }
-    this.saleService.mobilePaymentConfirmation(paymentInfo).subscribe((response) => {
-      if (response) {
-       this.realTimeService.getTransactionDetails((rees) => {
-         this.checkingStatus = false;
-         transaction = rees;
-
-         this.dialog.open(ConfirmPaymentComponent, {
-          width: '540px',
-          height: '240px',
-          data: transaction
-        });
-       })
-       
+    this.realTimeService.getTransactionDetails((success) => {
+      this.checkingStatus = false;
+      if (success) {
+        this.dialog.open(ConfirmPaymentComponent, {
+          width: '400px',
+          data: success,
+          disableClose: true,
+        }).afterClosed().subscribe((closeData: any) => {
+          if (closeData.status == 'confirmed') {
+            this.paymentMethod.mobile = true;
+            const transactionCode = closeData.transactionId;
+            const amount = closeData.amount;
+            this.globalSaleAmount = amount;
+            this.finalizeSale(amount, transactionCode);
+            this.thisDialog.close();
+          }
+        })
       }
     })
-    
   }
 
   mobilePayment(): void {
     this.paymentMethod.mobile = true;
     this.paymentMethod.cash = !this.paymentMethod.mobile;
+    this.paymentMethod.invoice = !this.paymentMethod.mobile;
   }
 
   cashPayment(): void {
     this.paymentMethod.cash = true;
     this.paymentMethod.mobile = !this.paymentMethod.cash;
+    this.paymentMethod.invoice = !this.paymentMethod.cash;
   }
 
   receivePayment(): void {
     this.cashBalance = this.getBalance();
   }
 
-  printReceipt(): void {
+  printReceipt(amount?: any): void {
+    console.log('the amount is ', amount)
     const documentDefinition = {
       content: [
         {
@@ -239,7 +265,7 @@ export class ProductsSaleComponent implements OnInit {
         {
           table: {
             headerRows: 1,
-            widths: [this.paymentMethod.invoice ? 400 : 'auto', 'auto', 'auto', 'auto'],
+            widths: [400, 'auto', 'auto', 'auto'],
             heights: (row) => {
               if (row === 0) {
                 return 0;
@@ -262,7 +288,7 @@ export class ProductsSaleComponent implements OnInit {
               [
                 {
                   text: this.paymentMethod.invoice ? '' : 'Amount Received', fontSize: 8, bold: true, colspan: 6
-                }, {}, {}, this.paymentMethod.invoice ? '' : parseInt(this.cashForm.get('cashReceived').value, 2).toFixed(2)
+                }, {}, {}, this.paymentMethod.invoice ? '' : parseInt(amount, 2).toFixed(2)
               ],
               [
                 {
@@ -278,6 +304,7 @@ export class ProductsSaleComponent implements OnInit {
           text: '',
           margin: [0, 15, 0, 15]
         },
+        this.paymentMethod.invoice ?
         {
           columns: [
             [
@@ -287,6 +314,7 @@ export class ProductsSaleComponent implements OnInit {
             ]
           ]
         }
+        : {}
       ],
       styles: {
         sectionHeader: {

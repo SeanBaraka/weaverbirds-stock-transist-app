@@ -36,7 +36,6 @@
       </div>
       <div *ngIf="stockReports.length > 0;else noitems" class="card-list">
         <div class="card-list-item data-set" *ngFor="let stockInfo of stockReports; let index = index">
-<!--          <div class="small">{{vehicleInfo.date}}</div>-->
           <div><span class="">{{stockInfo.date}}</span></div>
           <div>{{stockInfo.shop}}</div>
           <div><span class="">Ksh. {{stockInfo.openingStockAmount.toLocaleString()}}</span></div>
