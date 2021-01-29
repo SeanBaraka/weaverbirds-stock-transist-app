@@ -37,7 +37,7 @@ export class ProductsSaleComponent implements OnInit {
   };
 
   private receiptNumber: string;
-  checkingStatus: boolean = false;
+  checkingStatus: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -94,6 +94,23 @@ export class ProductsSaleComponent implements OnInit {
     }
     this.cartTotal = this.computeCartTotal(this.cartProducts);
     this.searchProduct.reset();
+  }
+
+  /** one should be able to remove an item or a list of items from the cart
+   * the following two methods do exactly that.
+   * clearing the cart, nothing more
+   */
+  // 1. remove a single item from the cart
+  removeItemByIndex(item: any): void {
+    // we use the splice method to remove a single item from the array
+    // we, (and by we I mean I.. I am doing this alone, should start thinking of creating a team) do this by finding the index of the element using the .indexOf() function provided by the array [] type of stuff..
+    const index = this.cartProducts.indexOf(item);
+    // use the index to splice the array, splice is used to remove an element from an array.
+    this.cartProducts.splice(index, 1);
+
+    // once done recalculate the total cart total.. and we done removing a single item
+    this.cartTotal = this.computeCartTotal(this.cartProducts)
+
   }
 
   changeQuantity(index: number, value: any): void {
@@ -215,6 +232,7 @@ export class ProductsSaleComponent implements OnInit {
 
   mobilePayment(): void {
     this.paymentMethod.mobile = true;
+    this.checkingStatus = false;
     this.paymentMethod.cash = !this.paymentMethod.mobile;
     this.paymentMethod.invoice = !this.paymentMethod.mobile;
   }
@@ -249,7 +267,7 @@ export class ProductsSaleComponent implements OnInit {
               {text: 'P.O. Box 456-90100', style: 'textRegular'},
               {
                 text: 'Machakos',
-                fontSize: 8,
+                fontSize: 16,
                 style: {
                   margin: [0, 10, 0, 20]
                 }
@@ -277,28 +295,28 @@ export class ProductsSaleComponent implements OnInit {
               ['Product Name', 'Qty', '@', 'Sub Total'],
               ...this.cartProducts.map((p => (
                 [
-                  p.name, p.quantity, p.sellingPrice,
-                  (p.quantity * p.sellingPrice).toFixed(2)
+                  {text: p.name, style: 'textRegular'}, {text: p.quantity, style: 'textRegular'}, {text: p.sellingPrice, style: 'textRegular'},
+                  {text: (p.quantity * p.sellingPrice).toFixed(2), style: 'textRegular'}
                 ]))),
               [
                 {
-                  text: 'Total', fontSize: 8, bold: true, colspan: 6
+                  text: 'Total', style: 'textRegular', bold: true, colspan: 6
                 }, {}, {}, this.computeCartTotal(this.cartProducts).toFixed(2)
               ],
               [
                 {
-                  text: this.paymentMethod.invoice ? '' : 'Amount Received', fontSize: 8, bold: true, colspan: 6
+                  text: this.paymentMethod.invoice ? '' : 'Amount Received', style: 'textRegular', bold: true, colspan: 6
                 }, {}, {}, this.paymentMethod.invoice ? '' : parseInt(amount, 2).toFixed(2)
               ],
               [
                 {
-                  text: 'Change', fontSize: 8, bold: true, colspan: 6
+                  text: 'Change', style: 'textRegular', bold: true, colspan: 6
                 }, {}, {}, this.getBalance().toFixed(2)
               ]
             ]
           },
           layout: 'headerLineOnly',
-          fontSize: 7
+          fontSize: this.paymentMethod.invoice ? 12 : 18
         },
         {
           text: '',
@@ -324,11 +342,11 @@ export class ProductsSaleComponent implements OnInit {
         },
         subHeading: {
           margin: [0, 20, 0, 10],
-          fontSize: 10
+          fontSize: this.paymentMethod.invoice ? 14 : 18
         },
         textRegular: {
           margin: [0, 5, 0, 5],
-          fontSize: 8
+          fontSize: this.paymentMethod.invoice ? 12 : 16
         }
       }
     };

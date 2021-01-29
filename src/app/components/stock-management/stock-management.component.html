@@ -20,11 +20,11 @@
     <!-- Shop action buttons -->
     <div class="action-buttons" *ngIf="simpleShop">
       <div class="flexed">
-          <button [class.disabled]="!shopOpen" class="button-primary" (click)="openShop()">
+          <button [class.disabled]="shopOpen == true" class="button-primary" (click)="openShop()">
               <span>Open Shop</span>
               <span><img src="assets/open.svg" width="15" alt=""></span>
           </button>
-          <button [class.disabled]="shopOpen" class="button-secondary" (click)="closeShop()">
+          <button [class.disabled]="shopOpen == false" class="button-secondary" (click)="closeShop()">
               <span>Close Shop</span>
               <span><img src="assets/closed.svg" width="15" alt=""></span>
           </button>

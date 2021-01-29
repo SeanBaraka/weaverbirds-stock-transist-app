@@ -27,6 +27,9 @@
             <div class="item" contenteditable="true" (input)="changeQuantity(cartItem.id, $event.target.innerHTML)">{{cartItem.quantity}}</div>
             <div class="item" contenteditable="true" (input)="changePrice(cartItem.id, $event.target.innerHTML)">{{cartItem.sellingPrice}}</div>
             <div class="item">{{cartItem.sellingPrice * cartItem.quantity}}</div>
+            <div class="item remove" (click)="removeItemByIndex(index)">
+              <span class="smallest">Remove -</span>
+            </div>
           </div>
       </div>
       <div class="sub-totals">
@@ -55,6 +58,7 @@
               <input type="text" formControlName="amount" id="amount" value="{{cartTotal}}" readonly>
             </div> -->
             <h1>Paybill No: 4062541</h1>
+            <p class="bold small mgy-1">Acc. No: WEAVERBIRDS</p>
           </div>
         </form>
         <h5 class="mgy-2">Payment Methods</h5>
@@ -86,13 +90,13 @@
               </div>
             </div>
           </div>
-          <div class="cash-payment" *ngIf="paymentMethod.mobile == true && checkingStatus == false; else awaitingTransactionStatus">
+          <div class="cash-payment" *ngIf="paymentMethod.mobile && checkingStatus == false; else awaitingTransactionStatus">
             <div class="flexed flexed-column mgy-1">
               <button class="button button-text button-info bordered" (click)="confirmMobilePayment()">Confirm Payment</button>
             </div>
           </div>
           <ng-template #awaitingTransactionStatus>
-            <div class="flexed flexed-column mgy-1">
+            <div class="flexed flexed-column mgy-1" *ngIf="checkingStatus">
               <p class="smallest bold mgy-1">Checking Transaction ....</p>
             </div>
           </ng-template>
