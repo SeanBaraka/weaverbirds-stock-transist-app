@@ -27,8 +27,8 @@
             <div class="item" contenteditable="true" (input)="changeQuantity(cartItem.id, $event.target.innerHTML)">{{cartItem.quantity}}</div>
             <div class="item" contenteditable="true" (input)="changePrice(cartItem.id, $event.target.innerHTML)">{{cartItem.sellingPrice}}</div>
             <div class="item">{{cartItem.sellingPrice * cartItem.quantity}}</div>
-            <div class="item remove" (click)="removeItemByIndex(index)">
-              <span class="smallest">Remove -</span>
+            <div class="item remove last" (click)="removeItemByIndex(index)">
+              <img src="assets/minus.svg" width="16" alt="">
             </div>
           </div>
       </div>

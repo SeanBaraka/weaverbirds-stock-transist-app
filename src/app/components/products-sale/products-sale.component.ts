@@ -248,7 +248,6 @@ export class ProductsSaleComponent implements OnInit {
   }
 
   printReceipt(amount?: any): void {
-    console.log('the amount is ', amount)
     const documentDefinition = {
       content: [
         {
@@ -267,7 +266,7 @@ export class ProductsSaleComponent implements OnInit {
               {text: 'P.O. Box 456-90100', style: 'textRegular'},
               {
                 text: 'Machakos',
-                fontSize: 16,
+                fontSize: this.paymentMethod.invoice ? 8: 16,
                 style: {
                   margin: [0, 10, 0, 20]
                 }
@@ -306,7 +305,7 @@ export class ProductsSaleComponent implements OnInit {
               [
                 {
                   text: this.paymentMethod.invoice ? '' : 'Amount Received', style: 'textRegular', bold: true, colspan: 6
-                }, {}, {}, this.paymentMethod.invoice ? '' : parseInt(amount, 2).toFixed(2)
+                }, {}, {}, this.paymentMethod.invoice ? '' : `${amount.toFixed(2)}`
               ],
               [
                 {
@@ -316,7 +315,7 @@ export class ProductsSaleComponent implements OnInit {
             ]
           },
           layout: 'headerLineOnly',
-          fontSize: this.paymentMethod.invoice ? 12 : 18
+          fontSize: this.paymentMethod.invoice ? 8 : 24
         },
         {
           text: '',
@@ -342,11 +341,11 @@ export class ProductsSaleComponent implements OnInit {
         },
         subHeading: {
           margin: [0, 20, 0, 10],
-          fontSize: this.paymentMethod.invoice ? 14 : 18
+          fontSize: this.paymentMethod.invoice ? 10 : 24
         },
         textRegular: {
           margin: [0, 5, 0, 5],
-          fontSize: this.paymentMethod.invoice ? 12 : 16
+          fontSize: this.paymentMethod.invoice ? 8 : 20
         }
       }
     };
