@@ -23,6 +23,7 @@ export class ProductSaleService {
   getAllSales(): Observable<any> {
     return this.http.get(`${environment.apiBaseUrl}sales/all`);
   }
+  
   getCustomers(): Observable<any> {
     return this.http.get(`${environment.apiBaseUrl}customers/list`);
   }

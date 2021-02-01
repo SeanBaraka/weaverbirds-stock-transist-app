@@ -1,26 +1,28 @@
 import { Injectable } from '@angular/core';
 import { SelectControlValueAccessor } from '@angular/forms';
 import { Observable } from 'rxjs';
-import * as socketIO from 'socket.io-client';
+import {io, Socket} from 'socket.io-client';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RealTimeDataService {
-  socket: socketIO.Socket;
-  constructor() {}
+  socket: Socket;
+  constructor() {
+    this.startConnection();
+  }
 
-  getAccountBalance(): any {
-    this.socket.on('apiresult', (data) => {
-      console.log(data);
+  getAccountBalance(balanceResult): any {
+    this.socket.on('accouuntBalance', (data) => {
+      return balanceResult(data);
     });
   }
 
   /** starts the connection to the socket io server */
   startConnection(): any {
-    if (this.socket == null || !this.serverConnected()) {
-      this.socket = socketIO.io(environment.socketUrl);
+    if (this.socket == null || this.socket == undefined) {
+      this.socket = io(environment.socketUrl);
       return this.socket
     } else {
       return this.socket
@@ -29,6 +31,7 @@ export class RealTimeDataService {
 
   /** check if the connection was established */
   serverConnected(): boolean {
+    console.log('from the rt service',this.socket)
     return this.socket.connected
   }
 

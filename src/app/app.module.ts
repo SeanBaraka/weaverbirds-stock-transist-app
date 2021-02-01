@@ -33,6 +33,7 @@ import { ConfigSettingsComponent } from './components/config-settings/config-set
 import { SuperuserSetupComponent } from './components/superuser-setup/superuser-setup.component';
 import { AuthLoginComponent } from './components/auth-login/auth-login.component';
 import { SalesSummariesComponent } from './components/sales-summaries/sales-summaries.component';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [

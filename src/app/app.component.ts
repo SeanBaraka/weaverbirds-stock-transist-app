@@ -12,6 +12,6 @@ export class AppComponent {
    *
    */
   constructor(private rtService: RealTimeDataService) {
-    this.rtService.startConnection()
+    console.log('from app', this.rtService.serverConnected())
   }
 }
