@@ -282,7 +282,7 @@ export class ProductsSaleComponent implements OnInit {
         {
           table: {
             headerRows: 1,
-            widths: [400, 'auto', 'auto', 'auto'],
+            widths: [ this.paymentMethod.invoice ? 400 : 'auto', 'auto', 'auto', 'auto'],
             heights: (row) => {
               if (row === 0) {
                 return 0;
