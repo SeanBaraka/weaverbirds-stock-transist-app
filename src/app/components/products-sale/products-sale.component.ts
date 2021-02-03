@@ -257,10 +257,10 @@ export class ProductsSaleComponent implements OnInit {
           width: this.paymentMethod.invoice ? 100 : 400,
           alignment: this.paymentMethod.invoice ? 'left' : 'center'
         },
-        {
+        this.paymentMethod.invoice ? {
           columns: [
             [
-              { text: `Date - ${new Date(Date.now()).toLocaleDateString()}`, style: 'textRegular', alignment: this.paymentMethod.invoice ? 'left' : 'center'},
+              { text: `Date - ${new Date(Date.now()).toLocaleDateString()}`, width: '*', style: 'textRegular', alignment: this.paymentMethod.invoice ? 'left' : 'center'},
               {
                 text: this.paymentMethod.invoice ? `INVOICE NO:  #${this.receiptNumber}` : `Receipt Number #${this.receiptNumber}`,
                 style: 'textRegular',
@@ -271,7 +271,7 @@ export class ProductsSaleComponent implements OnInit {
             ],
             // this is the part of the header that shows custmer details
             // it is only available for the invoice payment method
-            this.paymentMethod.invoice ? [
+            [
               { text: `BILLING INFORMATION:`, style: 'textRegular', alignment: 'right', bold: true},
               {
                 text: `Invoice Status: NOT PAID`,
@@ -280,18 +280,39 @@ export class ProductsSaleComponent implements OnInit {
               },
               {text: `CUSTOMER:  ${this.invoiceForm.get('customerName').value.toUpperCase()}`, style: 'textRegular', alignment: 'right'},
               {text: `TEL NO: ${this.invoiceForm.get('customerTel').value}`, style: 'textRegular', alignment: 'right'}
-            ] : {}
+            ]
+          ]
+        } : {
+          columns: [
+            [
+              {text: 'WEAVERBIRDS LIMITED', style: 'textRegular', alignment: this.paymentMethod.invoice ? 'left' : 'center'},
+              {text: 'P.O. BOX 3305-90100 MACHAKOS, KENYA', style: 'textRegular', alignment: this.paymentMethod.invoice ? 'left' : 'center'},
+              {text: 'TELEPHONE NO: +254727275739', style: 'textRegular', alignment: this.paymentMethod.invoice ? 'left' : 'center'},
+              {text: 'PIN: P051815907L', style: 'textRegular', alignment: this.paymentMethod.invoice ? 'left' : 'center'}
+            ]
+           
           ]
         },
+        this.paymentMethod.invoice != true ? {
+          columns: [
+            [
+              {text: `CASH SALE #${this.receiptNumber}`, style: 'textRegular', alignment: 'left'},
+              {text: `DATE TIME: ${new Date(Date.now()).toLocaleDateString()}`, style: 'textRegular', alignment: 'left'},
+              {text: `SHOP NAME: ${this.data.shopName.toUpperCase()}`, style: 'textRegular', alignment: 'left'}
+            ]
+          ]
+        } : {
+
+        },
         {
-          text: this.paymentMethod.invoice ? 'INVOICE SALE' : 'CASH SALE',
+          text: this.paymentMethod.invoice ? 'INVOICE SALE' : '',
           bold: true,
           style: 'subHeading',
           alignment: this.paymentMethod.invoice ? 'left' : 'center'
         },
         {
-          table: {
-            headerRows: 1,
+          table: { 
+            headerRows: this.paymentMethod.invoice ? 1 : 0,
             widths: [ this.paymentMethod.invoice ? '*' : 400, 'auto', 'auto', 'auto'],
             heights: (row) => {
               if (row === 0) {
@@ -301,13 +322,13 @@ export class ProductsSaleComponent implements OnInit {
               }
             },
             body: [
-              ['Product Name', 'Qty', '@', 'Sub Total'],
+              [{text:this.paymentMethod.invoice ? 'Product Name' : 'ITEM', style: 'tableHeader'}, {text: 'QTY', style: 'tableHeader'}, {text: 'PRICE', style: 'tableHeader'}, {text: 'PRICE', style: 'tableHeader'}],
               ...this.cartProducts.map((p => (
                 [
-                  {text: p.name, style: 'textRegular', margin: [0, 5, 0, 5]}, 
-                  {text: p.quantity, style: 'textRegular', margin: [0, 5, 0, 5]},
-                  {text: p.sellingPrice, style: 'textRegular', margin: [0, 5, 0, 5]},
-                  {text: (p.quantity * p.sellingPrice).toFixed(2), style: 'textRegular', margin: [0, 5, 0, 5]}
+                  {text: p.name, style: 'textRegular', margin: this.paymentMethod.invoice ? [0,5,0,5] : [0, 10, 0, 10]}, 
+                  {text: p.quantity, style: 'textRegular', margin: this.paymentMethod.invoice ? [0,5,0,5] : [0, 10, 0, 10]},
+                  {text: p.sellingPrice, style: 'textRegular', margin: this.paymentMethod.invoice ? [0,5,0,5] : [0, 10, 0, 10]},
+                  {text: (p.quantity * p.sellingPrice).toFixed(2), style: 'textRegular', margin: this.paymentMethod.invoice ? [0,5,0,5] : [0, 10, 0, 10]}
                 ]))),
             ]
           },
@@ -387,15 +408,19 @@ export class ProductsSaleComponent implements OnInit {
         },
         subHeading: {
           margin: [0, 20, 0, 10],
-          fontSize: this.paymentMethod.invoice ? 10 : 24
+          fontSize: this.paymentMethod.invoice ? 12 : 26
         },
         textRegular: {
           margin: [0, 5, 0, 5],
-          fontSize: this.paymentMethod.invoice ? 8 : 20
+          fontSize: this.paymentMethod.invoice ? 10 : 24
         },
         textRegularLarge: {
           margin: [0, 5, 0, 5],
-          fontSize: this.paymentMethod.invoice ? 8 : 24
+          fontSize: this.paymentMethod.invoice ? 10 : 26
+        },
+        tableHeader: {
+          bold: true, 
+          margin: [0,5,0,5]
         }
       }
     };
