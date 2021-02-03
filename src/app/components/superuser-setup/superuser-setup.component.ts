@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class SuperuserSetupComponent implements OnInit {
   loading = false;
+  successMessage: any
 
   constructor(
     private fb: FormBuilder,
@@ -45,6 +46,7 @@ export class SuperuserSetupComponent implements OnInit {
     this.loading = true;
     this.authService.registerUser(this.registerForm.value).subscribe((response) => {
       if (response) {
+        this.successMessage = response.success
         this.loading = false;
         this.registerForm.reset()
       }

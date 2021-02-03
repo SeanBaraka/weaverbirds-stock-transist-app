@@ -13,13 +13,13 @@
             <div class="flexed flexed-justify-between flexed-align-center mgy-1">
                 <h5 class="smallest">Server url</h5>
                 <div class="valued mgl-2 last">
-                    <p class="smallest">http://192.168.0.105:3000</p>
+                    <p class="smallest">{{serverUrl}}</p>
                 </div>
             </div>
             <div class="flexed flexed-justify-between flexed-align-center mgy-1">
-                <h6 class="smallest">Server Status</h6>
+                <h6 class="smallest">Application Network Status</h6>
                 <div class="valued mgl-2" style="justify-self: end;">
-                    <p class="smallest">online</p>
+                    <p class="smallest">{{connectionStatus}}</p>
                 </div>
             </div>
         </div>
@@ -57,6 +57,17 @@
                         <input type="checkbox" id="switch-vehicle-dispatch">
                         <label class="switch-label smallest" for="switch-vehicle-dispatch">Turn On</label>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="user-manage" style="width: 50%; max-width: 540px">
+            <h4 class="mgy-2">System User Management</h4>
+            <div class="flexed flexed-justify-between flexed-align-center">
+                <div class="smallest">
+                    Create User
+                </div>
+                <div class="mgl-2">
+                    <button class="button button-text text-info bordered" (click)="addUserDialog()">Add new user</button>
                 </div>
             </div>
         </div>
