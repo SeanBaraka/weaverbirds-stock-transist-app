@@ -34,6 +34,7 @@ import { SuperuserSetupComponent } from './components/superuser-setup/superuser-
 import { AuthLoginComponent } from './components/auth-login/auth-login.component';
 import { SalesSummariesComponent } from './components/sales-summaries/sales-summaries.component';
 import { environment } from 'src/environments/environment';
+import { DashboardAdminComponent } from './components/dashboard-admin/dashboard-admin.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { environment } from 'src/environments/environment';
     ConfigSettingsComponent,
     SuperuserSetupComponent,
     AuthLoginComponent,
-    SalesSummariesComponent
+    SalesSummariesComponent,
+    DashboardAdminComponent
   ],
   imports: [
     BrowserModule,

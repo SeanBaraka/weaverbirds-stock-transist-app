@@ -1,0 +1,23 @@
+<div class="app-container">
+    <main>
+        <div class="user-logged-in">
+            <app-user-logged-in></app-user-logged-in>
+        </div>
+        <div class="body-container">
+            <h3 class="main-heading">Administrator Dashboard</h3>
+            <!--  shops info-->
+            <div class="shops-info mgy-2">
+            <h3>Quick Actions</h3>
+            <div class="grid shops-summary mgy-1">
+                <div class="grid-item card card-color actionable" [class.overlay]="index != 0" (click)="navigateToDestination(index)" [class.card-color-pri]="index % 3 == 1" [class.card-color-main]="index % 3 == 0" [class.card-color-sec]="index % 3 == 2" *ngFor="let item of items;let index = index">
+                    <h3>{{item}}</h3>
+                    <div class="desc mgy-1">
+                        <!-- <p>{{shop.category.name}}</p> -->
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </main>
+  </div>
+  

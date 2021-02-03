@@ -52,7 +52,13 @@ export class AuthLoginComponent implements OnInit {
         this.loading = false;
         if (response.token) {
           this.authService.saveUser(response.token);
-          this.router.navigate(['']);
+          const userData = this.authService.getUserData();
+          if(userData.isa || userData.issa) {
+            this.router.navigate(['admin'])
+          }
+          else {
+            this.router.navigate(['']);
+          }
         }
       }
     }, (error) => {

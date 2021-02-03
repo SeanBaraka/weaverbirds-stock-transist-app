@@ -15,6 +15,7 @@ import {StockTakeBarComponent} from "./components/stock-take-bar/stock-take-bar.
 import { ConfigSettingsComponent } from './components/config-settings/config-settings.component';
 import { SuperuserSetupComponent } from './components/superuser-setup/superuser-setup.component';
 import { AuthLoginComponent } from './components/auth-login/auth-login.component';
+import { DashboardAdminComponent } from './components/dashboard-admin/dashboard-admin.component';
 
 const routes: Routes = [
   { path: 'auth', component: AuthComponent, children: [
@@ -34,7 +35,10 @@ const routes: Routes = [
       { path: 'personnel', component: PersonnelComponent },
       { path: 'finance', component: FinanceComponent },
       { path: 'settings', component: ConfigSettingsComponent }
-    ] },
+    ] 
+  },
+
+  { path: 'admin', component: DashboardAdminComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({
