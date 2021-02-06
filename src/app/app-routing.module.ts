@@ -16,29 +16,34 @@ import { ConfigSettingsComponent } from './components/config-settings/config-set
 import { SuperuserSetupComponent } from './components/superuser-setup/superuser-setup.component';
 import { AuthLoginComponent } from './components/auth-login/auth-login.component';
 import { DashboardAdminComponent } from './components/dashboard-admin/dashboard-admin.component';
+import { ShopDashboardComponent } from './components/shop-dashboard/shop-dashboard.component';
+import { ShopStockComponent } from './components/shop-stock/shop-stock.component';
+import { ShopReportsComponent } from './components/shop-reports/shop-reports.component';
 
 const routes: Routes = [
   { path: 'auth', component: AuthComponent, children: [
     { path: 'register', component: SuperuserSetupComponent },
     { path: 'login', component: AuthLoginComponent }
   ] },
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: 'admin', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], children: [
       { path: 'products', component: ProductsComponent },
       { path: '', redirectTo: 'summaries', pathMatch: 'full'},
       { path: 'summaries', component: SummariesComponent },
-      { path: 'stock', component: StockManagementComponent },
+      { path: 'stock', component: ShopStockComponent },
       { path: 'stock-bar', component: StockTakeBarComponent },
       { path: 'shops', component: ShopsAvailableComponent },
       { path: 'vehicles', component: VehiclesComponent },
       { path: 'routes', component: VehicleRoutesComponent },
       { path: 'personnel', component: PersonnelComponent },
       { path: 'finance', component: FinanceComponent },
-      { path: 'settings', component: ConfigSettingsComponent }
+      { path: 'settings', component: ConfigSettingsComponent },
+      { path: 'reports', component: ShopReportsComponent }
     ] 
   },
 
-  { path: 'admin', component: DashboardAdminComponent, canActivate: [AuthGuard]}
+  { path: 'admin', component: DashboardAdminComponent, canActivate: [AuthGuard]},
+  { path: 'admin/shop', component: ShopDashboardComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

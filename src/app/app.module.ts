@@ -35,6 +35,10 @@ import { AuthLoginComponent } from './components/auth-login/auth-login.component
 import { SalesSummariesComponent } from './components/sales-summaries/sales-summaries.component';
 import { environment } from 'src/environments/environment';
 import { DashboardAdminComponent } from './components/dashboard-admin/dashboard-admin.component';
+import { ShopDashboardComponent } from './components/shop-dashboard/shop-dashboard.component';
+import { InvoicesComponent } from './components/invoices/invoices.component';
+import { ShopReportsComponent } from './components/shop-reports/shop-reports.component';
+import { ShopStockComponent } from './components/shop-stock/shop-stock.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +68,11 @@ import { DashboardAdminComponent } from './components/dashboard-admin/dashboard-
     SuperuserSetupComponent,
     AuthLoginComponent,
     SalesSummariesComponent,
-    DashboardAdminComponent
+    DashboardAdminComponent,
+    ShopDashboardComponent,
+    InvoicesComponent,
+    ShopReportsComponent,
+    ShopStockComponent
   ],
   imports: [
     BrowserModule,

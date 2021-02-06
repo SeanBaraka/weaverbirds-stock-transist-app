@@ -50,7 +50,6 @@ export class StockManagementComponent implements OnInit {
     if (history.state.simpleShop != null) {
       this.simpleShop = history.state.simpleShop
       this.shopOpen = history.state.openStatus
-      console.log(history.state)
     }
     this.selectedShop = history.state.shop;
     this.getShop(this.selectedShop.name.toLowerCase());

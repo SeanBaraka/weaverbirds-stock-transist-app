@@ -1,0 +1,21 @@
+<div class="app-container">
+    <main>
+        <div class="user-logged-in">
+            <app-user-logged-in></app-user-logged-in>
+        </div>
+        <div class="body-container">
+            <h3 class="main-heading">{{shop.name}} Home</h3>
+        </div>
+        <div class="center">
+            <h4 class="heading">Quick Links</h4>
+            <div class="grid grid-centered mgy-2">
+                <div class="grid-item card card-round card-color actionable" (click)="navigateToDestination(index)" [class.card-color-pri]="index % 3 == 1" [class.card-color-main]="index % 3 == 0" [class.card-color-sec]="index % 3 == 2" *ngFor="let item of items;let index = index">
+                    <h5>{{item.split('')[0]}}</h5>
+                    <div class="desc mgy-1">
+                        <p>{{item}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
