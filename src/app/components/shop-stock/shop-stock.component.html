@@ -5,6 +5,12 @@
                 <!-- Items in stock -->
             <div class="action-buttons" style="margin: 3em 0;">
                 <div class="flexed">
+                    <button class="button button-text mgy-1" (click)="navigateBack()">
+                        <span>
+                            <img src="assets/back-arrow.svg" width="13" alt="" style="filter: invert(0)">
+                        </span>
+                        <span>Back</span>
+                    </button>
                     <button class="button-primary" (click)="launchAddModal()">
                         <span *ngIf="!simpleShop;else shopButton">Receive Products</span>
                         <ng-template #shopButton>
@@ -20,7 +26,7 @@
                 <h5 class="sub-heading">Stock Information summary</h5>
                 <div class="container mgy-2" *ngIf="stockProducts.length > 0">
                     <div class="grid shops-summary mgy-1">
-                        <div class="grid-item card card-color card-flat actionable">
+                        <div class="grid-item card card-color card-flat">
                             <img src="assets/stocks.svg" width="35" alt="">
                             <h5 class="mgy-1">Total Inventory</h5>
                             <div class="desc mgy-1">

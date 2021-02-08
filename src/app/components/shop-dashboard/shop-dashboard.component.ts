@@ -13,7 +13,17 @@ export class ShopDashboardComponent implements OnInit {
 
   stockProducts: any = []
   shop: any;
-  items = ['POS','Invoices', 'Suppliers', 'Quotations', 'Stock', 'Reports', 'Purchases', 'Cash Summary']
+  items = [
+    {title:'POS', image: 'credit-card-machine.svg'},
+    {title: 'Invoices', image: 'invoice.svg'}, 
+    {title: 'Purchases', image: 'supply.svg'}, 
+    {title: 'Quotations', image: 'payment.svg'}, 
+    {title:'Stock', image: 'stock-image.svg'}, 
+    {title:'Reports', image: 'report.svg'}, 
+    {title: 'Cash Summary', image: 'money.png'},
+    {title:'Expenses & Gifts', image: 'market.svg'}
+  ]
+
   constructor(
     private router: Router,
     private dialog: MatDialog,
@@ -32,9 +42,9 @@ export class ShopDashboardComponent implements OnInit {
     });
   }
 
-  navigateToDestination(index: number): void {
-    switch (index) {
-      case 0:
+  navigateToDestination(item: any): void {
+    switch (item.title) {
+      case 'POS':
         this.dialog.open(ProductsSaleComponent, {
           width: '90%',
           height: '540px',
@@ -45,7 +55,22 @@ export class ShopDashboardComponent implements OnInit {
           }
         });
         break;
-      case 4:
+
+      // Opens the POS dialog box, while open, the window should 
+      // be focused on the invoice section of the sale.
+      case 'Invoices':
+        this.dialog.open(ProductsSaleComponent, {
+          width: '90%',
+          height: '540px',
+          data: {shopId: this.shop.id, stockProducts: this.stockProducts, shopName: this.shop.name, invoice: true }
+        }).afterClosed().subscribe((data) => {
+          if (data) {
+            // this.getShopStock();
+          }
+        });
+        break;
+
+      case 'Stock':
         this.router.navigate(['dashboard','stock'], {
           state: {
             shop: this.shop,
@@ -53,17 +78,31 @@ export class ShopDashboardComponent implements OnInit {
             openStatus: this.shop.openStatus
           }
         })
+        break;
 
-      case 5: 
+      case 'Reports': 
         this.router.navigate(['dashboard', 'reports'], {
           state: {
             shop: this.shop
           }
         })
+        break;
     
+      case 'Cash Summary':
+        this.router.navigate(['dashboard', 'reports'], {
+          state: {
+            shop: this.shop
+          }
+        })
+        break;
+        
       default:
         break;
     }
+  }
+
+  navigateBack(): void {
+    this.router.navigate(['admin'])
   }
 
 }

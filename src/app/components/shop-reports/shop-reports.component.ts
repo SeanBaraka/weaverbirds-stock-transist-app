@@ -1,4 +1,6 @@
+import { LocationStrategy } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-shop-reports',
@@ -7,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShopReportsComponent implements OnInit {
 
-  constructor() { }
+  shop: any;
+  constructor(private router: Router) { 
+    
+  }
 
   ngOnInit(): void {
+    this.shop = history.state.shop
+  }
+
+  navigateBack(): void {
+    this.router.navigate(['admin', 'shop'], {
+      state: {
+        shop: this.shop
+      }
+    })
   }
 
 }

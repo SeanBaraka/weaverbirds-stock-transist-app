@@ -49,7 +49,6 @@ export class FinanceComponent implements OnInit {
         sale.date = new Date(sale.date).toLocaleDateString('en-GB')
         sale.shop = sale.shop.name
       })
-      console.log(response[response.length -1])
       this.allSales = response
       this.cashTransactions = this.filterSales('CASH', this.allSales)
       this.mpesaTransactions = this.filterSales('MOBILE', this.allSales)

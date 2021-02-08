@@ -68,7 +68,7 @@
               <img src="assets/dollar.png" alt="">
               <p class="smallest bold">Cash</p>
             </div>
-            <div class="grid-item" (click)="mobilePayment()">
+            <div class="grid-item" [class.disabled]="!paymentMethod.mobile" (click)="mobilePayment()">
               <img src="assets/mpesa.png" alt="">
               <p class="smallest bold">Mobile</p>
             </div>

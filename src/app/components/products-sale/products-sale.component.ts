@@ -62,6 +62,14 @@ export class ProductsSaleComponent implements OnInit {
     this.paymentMethod.cash = true;
     this.paymentMethod.mobile = false;
     this.retrieveCustomers();
+
+    // this here is for a special occassion, i.e. when the invoice is requested earlier.
+    // e.g. when a user clicks on invoices from the main menu.
+    if (this.data.invoice != undefined || this.data.invoice != null ) {
+      this.paymentMethod.cash = false;
+      this.paymentMethod.mobile = false;
+      this.paymentMethod.invoice = true
+    }
   }
 
   retrieveCustomers(): void {

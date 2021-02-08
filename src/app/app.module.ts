@@ -39,6 +39,18 @@ import { ShopDashboardComponent } from './components/shop-dashboard/shop-dashboa
 import { InvoicesComponent } from './components/invoices/invoices.component';
 import { ShopReportsComponent } from './components/shop-reports/shop-reports.component';
 import { ShopStockComponent } from './components/shop-stock/shop-stock.component';
+import { ShopExpensesComponent } from './components/shop-expenses/shop-expenses.component';
+import { ShopSalesReportComponent } from './components/shop-sales-report/shop-sales-report.component';
+import { ShopProductSaleComponent } from './components/shop-product-sale/shop-product-sale.component';
+import { ShopProfitReportsComponent } from './components/shop-profit-reports/shop-profit-reports.component';
+import { ShopPurchaseReportComponent } from './components/shop-purchase-report/shop-purchase-report.component';
+import { ShopInventoryReportComponent } from './components/shop-inventory-report/shop-inventory-report.component';
+import { ShopEvaluationReportComponent } from './components/shop-evaluation-report/shop-evaluation-report.component';
+import { ShopItemTransferReportComponent } from './components/shop-item-transfer-report/shop-item-transfer-report.component';
+import { ShopFinancialReportComponent } from './components/shop-financial-report/shop-financial-report.component';
+import { ShopVatReportComponent } from './components/shop-vat-report/shop-vat-report.component';
+import { ShopSuppliersReportComponent } from './components/shop-suppliers-report/shop-suppliers-report.component';
+import { ShopReportsMenuComponent } from './components/shop-reports-menu/shop-reports-menu.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +84,19 @@ import { ShopStockComponent } from './components/shop-stock/shop-stock.component
     ShopDashboardComponent,
     InvoicesComponent,
     ShopReportsComponent,
-    ShopStockComponent
+    ShopStockComponent,
+    ShopExpensesComponent,
+    ShopSalesReportComponent,
+    ShopProductSaleComponent,
+    ShopProfitReportsComponent,
+    ShopPurchaseReportComponent,
+    ShopInventoryReportComponent,
+    ShopEvaluationReportComponent,
+    ShopItemTransferReportComponent,
+    ShopFinancialReportComponent,
+    ShopVatReportComponent,
+    ShopSuppliersReportComponent,
+    ShopReportsMenuComponent
   ],
   imports: [
     BrowserModule,

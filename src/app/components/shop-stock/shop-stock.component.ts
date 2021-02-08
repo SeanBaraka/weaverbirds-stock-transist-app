@@ -8,6 +8,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { ProductSaleService } from 'src/app/services/product-sale.service';
 import { ProductsSaleComponent } from '../products-sale/products-sale.component';
+import { Router } from '@angular/router';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -25,7 +26,8 @@ export class ShopStockComponent implements OnInit {
   allSales: any[] = [];
   constructor(private stockData: StockDataService,
     private dialog: MatDialog,
-    private salesService: ProductSaleService) { }
+    private salesService: ProductSaleService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.shop = history.state.shop
@@ -41,6 +43,14 @@ export class ShopStockComponent implements OnInit {
         this.stockProducts = products;
       }
     });
+  }
+
+  navigateBack(): void {
+    this.router.navigate(['admin', 'shop'], {
+      state: {
+        shop: this.shop
+      }
+    })
   }
 
   getStockTotal(): number {

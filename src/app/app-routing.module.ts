@@ -19,6 +19,14 @@ import { DashboardAdminComponent } from './components/dashboard-admin/dashboard-
 import { ShopDashboardComponent } from './components/shop-dashboard/shop-dashboard.component';
 import { ShopStockComponent } from './components/shop-stock/shop-stock.component';
 import { ShopReportsComponent } from './components/shop-reports/shop-reports.component';
+import { ShopSalesReportComponent } from './components/shop-sales-report/shop-sales-report.component';
+import { ShopPurchaseReportComponent } from './components/shop-purchase-report/shop-purchase-report.component';
+import { ShopSuppliersReportComponent } from './components/shop-suppliers-report/shop-suppliers-report.component';
+import { ShopInventoryReportComponent } from './components/shop-inventory-report/shop-inventory-report.component';
+import { ShopEvaluationReportComponent } from './components/shop-evaluation-report/shop-evaluation-report.component';
+import { ShopVatReportComponent } from './components/shop-vat-report/shop-vat-report.component';
+import { ShopItemTransferReportComponent } from './components/shop-item-transfer-report/shop-item-transfer-report.component';
+import { ShopFinancialReportComponent } from './components/shop-financial-report/shop-financial-report.component';
 
 const routes: Routes = [
   { path: 'auth', component: AuthComponent, children: [
@@ -38,7 +46,17 @@ const routes: Routes = [
       { path: 'personnel', component: PersonnelComponent },
       { path: 'finance', component: FinanceComponent },
       { path: 'settings', component: ConfigSettingsComponent },
-      { path: 'reports', component: ShopReportsComponent }
+      { path: 'reports', component: ShopReportsComponent, children: [
+        { path: '', redirectTo: 'sales', pathMatch: 'full'},
+        { path: 'sales', component: ShopSalesReportComponent },
+        { path: 'purchases', component: ShopPurchaseReportComponent},
+        { path: 'suppliers', component: ShopSuppliersReportComponent},
+        { path: 'inventory', component: ShopInventoryReportComponent},
+        { path: 'evaluation', component: ShopEvaluationReportComponent },
+        { path: 'tax', component: ShopVatReportComponent },
+        { path: 'product-transfer', component: ShopItemTransferReportComponent },
+        { path: 'finance', component: ShopFinancialReportComponent }
+      ] }
     ] 
   },
 
