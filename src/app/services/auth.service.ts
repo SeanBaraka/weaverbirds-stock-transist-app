@@ -11,6 +11,9 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
+  /** checks if a user is authenticated. returns a boolean value
+   * for the result.
+   */
   isAuthenticated(): boolean {
     const jwt = new JwtHelperService();
     const token = localStorage.getItem('appId');

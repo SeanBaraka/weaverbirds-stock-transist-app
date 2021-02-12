@@ -18,7 +18,7 @@
                 </div>
             </div>
 
-            <div class="shops-info mgy-2">
+            <div class="shops-info mgy-2" *ngIf="userIsAdmin">
                 <h3>Fleet and Vehicle Management</h3>
                 <div class="grid shops-summary mgy-1">
                     <div class="grid-item vehicles" *ngFor="let vehicle of vehicles">
@@ -35,16 +35,11 @@
                 </div>
             </div>
 
-            <div class="flexed flexed-justify mgy-2">
+            <div class="flexed flexed-justify mgy-2" *ngIf="userIsAdmin">
                 <div class="shops-info">
                     <h3>Human Resources</h3>
-                    <div class="grid shops-summary mgy-1">
-                        <div class="grid-item card card-color actionable" [class.overlay]="index != 0" (click)="navigateToDestination(index)" [class.card-color-pri]="index % 3 == 1" [class.card-color-main]="index % 3 == 0" [class.card-color-sec]="index % 3 == 2" *ngFor="let item of items;let index = index">
-                            <h3>{{item}}</h3>
-                            <div class="desc mgy-1">
-                                <!-- <p>{{shop.category.name}}</p> -->
-                            </div>
-                        </div>
+                    <div class="hr-container mgy-1">
+                        <a [routerLink]="['/dashboard','user-management']" class="smallest">User Management</a>
                     </div>
                 </div>
                 <div class="shops-info mgl-1">
@@ -59,7 +54,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </main>
   </div>

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { StockDataService } from 'src/app/services/stock-data.service';
 import { VehicleService } from 'src/app/services/vehicle.service';
+import { ShopManagerService } from 'src/app/services/shop-manager.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-dashboard-admin',
@@ -14,26 +16,41 @@ export class DashboardAdminComponent implements OnInit {
   shops: any[] = []
   vehicles: any[];
 
+  userIsAdmin: boolean;
+
   constructor(private router: Router, 
   private shopsService: StockDataService,
-  private vehicleService: VehicleService) { }
+  private vehicleService: VehicleService,
+  private shopManageService: ShopManagerService,
+  private authservice: AuthService) { }
 
   ngOnInit(): void {
     this.getAvailableShops()
     this.getVehicles()
+    this.checkAdminStatus();
+  }
+
+  /** checks whether the user is an admin user */
+  checkAdminStatus(): void {
+    const userData = this.authservice.getUserData();
+    if (!userData.isa && !userData.issa) {
+      this.userIsAdmin = false
+    } else {
+      this.userIsAdmin = true
+    }
   }
 
   /**responsible for page navigations from the main dashboard */
   navigateToDestination(shop: any) {
     switch (shop.category.name) {
       case 'Bar':
-        this.router.navigate(['dashboard/stock'], {
+        this.router.navigate(['dashboard','stock'], {
           state: {
-            shop,
             simpleShop: true,
             openStatus: shop.openStatus
           }
         });
+        this.shopManageService.saveShop(shop)
         break;  
     
       default:
@@ -42,6 +59,7 @@ export class DashboardAdminComponent implements OnInit {
             shop
           }
         })
+        this.shopManageService.saveShop(shop);
         break;
     }
   }

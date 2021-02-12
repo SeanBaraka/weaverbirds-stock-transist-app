@@ -1,10 +1,21 @@
 <div class="app-container">
     <main>
         <div class="user-logged-in">
+            <app-menu-drop-down></app-menu-drop-down>
             <app-user-logged-in></app-user-logged-in>
         </div>
         <div class="body-container">
-            <h3 class="main-heading">{{shop.name}} Home</h3>
+            <div class="flexed flexed-align-center">
+                <div class="center">
+                    <button class="button button-text" (click)="navigateBack()">
+                        <span>
+                            <img src="assets/back-arrow.svg" width="13" alt="" style="filter: invert(0)">
+                        </span>
+                        <span>Back</span>
+                    </button>
+                </div>
+                <h3 class="main-heading">{{shop.name}} Home</h3>
+            </div>
         </div>
         <div class="center">
             <h4 class="heading">Quick Links</h4>
@@ -19,14 +30,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="center" style="margin-top: 5em;">
-            <button class="button button-text mgy-1" (click)="navigateBack()">
-                <span>
-                    <img src="assets/back-arrow.svg" width="13" alt="" style="filter: invert(0)">
-                </span>
-                <span>Back</span>
-            </button>
         </div>
     </main>
 </div>

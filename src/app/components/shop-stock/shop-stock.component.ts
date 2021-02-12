@@ -31,6 +31,8 @@ export class ShopStockComponent implements OnInit {
 
   ngOnInit(): void {
     this.shop = history.state.shop
+
+    console.log('the shop from stocks', this.shop)
     this.getShopStock()
     this.getAllSales()
   }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ShopManagerService } from 'src/app/services/shop-manager.service';
 
 @Component({
   selector: 'app-shop-reports-menu',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShopReportsMenuComponent implements OnInit {
 
-  constructor() { }
+  shop: any;
+  constructor(
+    private shopManager: ShopManagerService
+  ) { 
+    this.shop = history.state.push
+  }
 
   ngOnInit(): void {
+    
   }
 
 }

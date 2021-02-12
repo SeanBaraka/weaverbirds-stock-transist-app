@@ -117,13 +117,25 @@ export class ProductsSaleComponent implements OnInit {
 
   }
 
-  changeQuantity(index: number, value: any): void {
-    const cartItem = this.cartProducts.find(x => x.id == index)
+  changingQuantity = true
+  changingPrice = true
+
+
+  toggleInput(): void {
+    this.changingQuantity = true
+  }
+
+  /**this is a bit tricky.
+   * @param index the index of the cart item to alter
+   * @param value the value of the input trigerring this function
+   */
+  changeQuantity(index: number, value: string): void {
+    const cartItem = this.cartProducts.find(x => x.id == index )
     cartItem.quantity = value;
     this.cartTotal = this.computeCartTotal(this.cartProducts)
   }
 
-  changePrice(index: number, value: any): void {
+  changePrice(index: number, value: string): void {
     const cartItem = this.cartProducts.find(x => x.id == index )
     cartItem.sellingPrice = value;
     this.cartTotal = this.computeCartTotal(this.cartProducts)

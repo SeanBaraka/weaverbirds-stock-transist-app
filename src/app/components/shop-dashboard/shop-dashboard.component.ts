@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { ShopManagerService } from 'src/app/services/shop-manager.service';
 import { StockDataService } from 'src/app/services/stock-data.service';
 import { ProductsSaleComponent } from '../products-sale/products-sale.component';
 
@@ -27,11 +28,13 @@ export class ShopDashboardComponent implements OnInit {
   constructor(
     private router: Router,
     private dialog: MatDialog,
-    private stockData: StockDataService) { }
+    private stockData: StockDataService,
+    private shopManagerService: ShopManagerService) { }
 
   ngOnInit(): void {
     this.shop = history.state.shop
     this.getShopProducts();
+    console.log('selected shop', this.shop);
   }
 
   getShopProducts(): void {
@@ -89,11 +92,7 @@ export class ShopDashboardComponent implements OnInit {
         break;
     
       case 'Cash Summary':
-        this.router.navigate(['dashboard', 'reports'], {
-          state: {
-            shop: this.shop
-          }
-        })
+        this.router.navigate(['dashboard', 'cash-summary'])
         break;
         
       default:

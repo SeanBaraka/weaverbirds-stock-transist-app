@@ -24,8 +24,14 @@
       <div class="table-data" style="height: 230px;max-height: 230px">
          <div class="card-list-item table-header padded-list-item" *ngFor="let cartItem of cartProducts;let index">
             <div class="item">{{cartItem.name}}</div>
-            <div class="item" contenteditable="true" (input)="changeQuantity(cartItem.id, $event.target.innerHTML)">{{cartItem.quantity}}</div>
-            <div class="item" contenteditable="true" (input)="changePrice(cartItem.id, $event.target.innerHTML)">{{cartItem.sellingPrice}}</div>
+            <div class="item" contenteditable="true" (click)="toggleInput()">
+              <input (input)="changeQuantity(cartItem.id,$event.target.value)" [class.hidden]="!changingQuantity" class="sm-input shorter" name="changeQty" [value]="cartItem.quantity">
+              <span [class.hidden]="changingQuantity">{{cartItem.quantity}}</span>
+            </div>
+            <div class="item" contenteditable="true">
+              <input [class.hidden]="!changingPrice" [value]="cartItem.sellingPrice" class="sm-input shorter" (input)="changePrice(cartItem.id, $event.target.value)">
+              <span [class.hidden]="changingPrice">{{cartItem.sellingPrice}}</span>
+            </div>
             <div class="item">{{cartItem.sellingPrice * cartItem.quantity}}</div>
             <div class="item remove last" (click)="removeItemByIndex(index)">
               <img src="assets/minus.svg" width="16" alt="">

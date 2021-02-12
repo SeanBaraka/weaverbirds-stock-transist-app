@@ -1,6 +1,7 @@
 import { LocationStrategy } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ShopManagerService } from 'src/app/services/shop-manager.service';
 
 @Component({
   selector: 'app-shop-reports',
@@ -10,7 +11,9 @@ import { Router } from '@angular/router';
 export class ShopReportsComponent implements OnInit {
 
   shop: any;
-  constructor(private router: Router) { 
+  constructor(
+    private router: Router,
+    private shopManager: ShopManagerService) { 
     
   }
 

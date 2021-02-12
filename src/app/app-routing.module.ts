@@ -27,6 +27,11 @@ import { ShopEvaluationReportComponent } from './components/shop-evaluation-repo
 import { ShopVatReportComponent } from './components/shop-vat-report/shop-vat-report.component';
 import { ShopItemTransferReportComponent } from './components/shop-item-transfer-report/shop-item-transfer-report.component';
 import { ShopFinancialReportComponent } from './components/shop-financial-report/shop-financial-report.component';
+import { ShopProductSaleComponent } from './components/shop-product-sale/shop-product-sale.component';
+import { ShopSalesReportAllComponent } from './components/shop-sales-report-all/shop-sales-report-all.component';
+import { ShopSalesPaymentsReportComponent } from './components/shop-sales-payments-report/shop-sales-payments-report.component';
+import { ShopSalesInvoicesReportComponent } from './components/shop-sales-invoices-report/shop-sales-invoices-report.component';
+import { UserManagementComponent } from './components/user-management/user-management.component';
 
 const routes: Routes = [
   { path: 'auth', component: AuthComponent, children: [
@@ -46,9 +51,17 @@ const routes: Routes = [
       { path: 'personnel', component: PersonnelComponent },
       { path: 'finance', component: FinanceComponent },
       { path: 'settings', component: ConfigSettingsComponent },
+      { path: 'user-management', component: UserManagementComponent },
       { path: 'reports', component: ShopReportsComponent, children: [
         { path: '', redirectTo: 'sales', pathMatch: 'full'},
-        { path: 'sales', component: ShopSalesReportComponent },
+        { path: 'sales', component: ShopSalesReportComponent , children: [
+          { path: '', redirectTo: 'all', pathMatch: 'full'},
+          {path: 'all', component: ShopSalesReportAllComponent },
+          { path: 'products', component: ShopProductSaleComponent },
+          { path: 'payments', component: ShopSalesPaymentsReportComponent},
+          { path: 'invoices', component: ShopSalesInvoicesReportComponent }
+
+        ]},
         { path: 'purchases', component: ShopPurchaseReportComponent},
         { path: 'suppliers', component: ShopSuppliersReportComponent},
         { path: 'inventory', component: ShopInventoryReportComponent},

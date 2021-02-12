@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShopProductSaleComponent implements OnInit {
 
+  productSales: any[] = []
   constructor() { }
 
   ngOnInit(): void {

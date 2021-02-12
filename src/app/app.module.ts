@@ -51,6 +51,13 @@ import { ShopFinancialReportComponent } from './components/shop-financial-report
 import { ShopVatReportComponent } from './components/shop-vat-report/shop-vat-report.component';
 import { ShopSuppliersReportComponent } from './components/shop-suppliers-report/shop-suppliers-report.component';
 import { ShopReportsMenuComponent } from './components/shop-reports-menu/shop-reports-menu.component';
+import { MenuDropDownComponent } from './components/menu-drop-down/menu-drop-down.component';
+import { ShopSalesReportAllComponent } from './components/shop-sales-report-all/shop-sales-report-all.component';
+import { ShopSalesPaymentsReportComponent } from './components/shop-sales-payments-report/shop-sales-payments-report.component';
+import { ShopSalesInvoicesReportComponent } from './components/shop-sales-invoices-report/shop-sales-invoices-report.component';
+import { SearchPrintFilterComponent } from './components/search-print-filter/search-print-filter.component';
+import { UserManagementComponent } from './components/user-management/user-management.component';
+import { BackButtonComponent } from './components/micro-interactions/back-button/back-button.component';
 
 @NgModule({
   declarations: [
@@ -96,7 +103,14 @@ import { ShopReportsMenuComponent } from './components/shop-reports-menu/shop-re
     ShopFinancialReportComponent,
     ShopVatReportComponent,
     ShopSuppliersReportComponent,
-    ShopReportsMenuComponent
+    ShopReportsMenuComponent,
+    MenuDropDownComponent,
+    ShopSalesReportAllComponent,
+    ShopSalesPaymentsReportComponent,
+    ShopSalesInvoicesReportComponent,
+    SearchPrintFilterComponent,
+    UserManagementComponent,
+    BackButtonComponent
   ],
   imports: [
     BrowserModule,
