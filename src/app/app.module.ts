@@ -58,6 +58,8 @@ import { ShopSalesInvoicesReportComponent } from './components/shop-sales-invoic
 import { SearchPrintFilterComponent } from './components/search-print-filter/search-print-filter.component';
 import { UserManagementComponent } from './components/user-management/user-management.component';
 import { BackButtonComponent } from './components/micro-interactions/back-button/back-button.component';
+import { CustomersListComponent } from './components/customers-list/customers-list.component';
+import { CreateCustomerComponent } from './components/create-customer/create-customer.component';
 
 @NgModule({
   declarations: [
@@ -110,7 +112,9 @@ import { BackButtonComponent } from './components/micro-interactions/back-button
     ShopSalesInvoicesReportComponent,
     SearchPrintFilterComponent,
     UserManagementComponent,
-    BackButtonComponent
+    BackButtonComponent,
+    CustomersListComponent,
+    CreateCustomerComponent
   ],
   imports: [
     BrowserModule,

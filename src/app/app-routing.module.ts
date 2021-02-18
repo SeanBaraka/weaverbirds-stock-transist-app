@@ -32,6 +32,7 @@ import { ShopSalesReportAllComponent } from './components/shop-sales-report-all/
 import { ShopSalesPaymentsReportComponent } from './components/shop-sales-payments-report/shop-sales-payments-report.component';
 import { ShopSalesInvoicesReportComponent } from './components/shop-sales-invoices-report/shop-sales-invoices-report.component';
 import { UserManagementComponent } from './components/user-management/user-management.component';
+import {CustomersListComponent} from './components/customers-list/customers-list.component';
 
 const routes: Routes = [
   { path: 'auth', component: AuthComponent, children: [
@@ -47,6 +48,7 @@ const routes: Routes = [
       { path: 'stock-bar', component: StockTakeBarComponent },
       { path: 'shops', component: ShopsAvailableComponent },
       { path: 'vehicles', component: VehiclesComponent },
+      { path: 'customers', component: CustomersListComponent},
       { path: 'routes', component: VehicleRoutesComponent },
       { path: 'personnel', component: PersonnelComponent },
       { path: 'finance', component: FinanceComponent },
@@ -70,7 +72,7 @@ const routes: Routes = [
         { path: 'product-transfer', component: ShopItemTransferReportComponent },
         { path: 'finance', component: ShopFinancialReportComponent }
       ] }
-    ] 
+    ]
   },
 
   { path: 'admin', component: DashboardAdminComponent, canActivate: [AuthGuard]},

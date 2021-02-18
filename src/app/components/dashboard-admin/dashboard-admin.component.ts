@@ -4,12 +4,13 @@ import { StockDataService } from 'src/app/services/stock-data.service';
 import { VehicleService } from 'src/app/services/vehicle.service';
 import { ShopManagerService } from 'src/app/services/shop-manager.service';
 import { AuthService } from 'src/app/services/auth.service';
+import {CustomerService} from '../../services/customer.service';
 
 @Component({
   selector: 'app-dashboard-admin',
-  templateUrl: './dashboard-admin.component.html',  
+  templateUrl: './dashboard-admin.component.html',
   styleUrls: ['./dashboard-admin.component.sass']
-})  
+})
 export class DashboardAdminComponent implements OnInit {
 
   items: any[] = []
@@ -17,10 +18,12 @@ export class DashboardAdminComponent implements OnInit {
   vehicles: any[];
 
   userIsAdmin: boolean;
+  customers: any[];
 
-  constructor(private router: Router, 
+  constructor(private router: Router,
   private shopsService: StockDataService,
   private vehicleService: VehicleService,
+  private customerService: CustomerService,
   private shopManageService: ShopManagerService,
   private authservice: AuthService) { }
 
@@ -28,6 +31,7 @@ export class DashboardAdminComponent implements OnInit {
     this.getAvailableShops()
     this.getVehicles()
     this.checkAdminStatus();
+    this.getTopCustomers(3);
   }
 
   /** checks whether the user is an admin user */
@@ -36,23 +40,38 @@ export class DashboardAdminComponent implements OnInit {
     if (!userData.isa && !userData.issa) {
       this.userIsAdmin = false
     } else {
-      this.userIsAdmin = true
+      this.userIsAdmin = true;
     }
   }
 
-  /**responsible for page navigations from the main dashboard */
-  navigateToDestination(shop: any) {
+  /** gets an array of customers and displays them here
+   * @param items - the number of customers to show
+   */
+  getTopCustomers(items: number): void {
+    this.customerService.getCustomers().subscribe((customersResponse: any[]) => {
+      customersResponse.forEach((customer) => {
+        if (customer.saleRecords == null || customer.saleRecords === undefined) {
+          customer.saleRecords = [];
+        }
+      });
+      this.customers = customersResponse;
+      this.customers.length = items;
+    });
+  }
+
+  /** responsible for page navigations from the main dashboard */
+  navigateToDestination(shop: any): void{
     switch (shop.category.name) {
       case 'Bar':
-        this.router.navigate(['dashboard','stock'], {
+        this.router.navigate(['dashboard', 'stock'], {
           state: {
             simpleShop: true,
             openStatus: shop.openStatus
           }
         });
         this.shopManageService.saveShop(shop)
-        break;  
-    
+        break;
+
       default:
         this.router.navigate(['admin','shop'], {
           state: {

@@ -1,0 +1,44 @@
+<div class="app-container">
+  <h3 class="main-heading">Weaverbirds / Customers</h3>
+
+  <div class="body-container">
+    <div class="search-add-customer">
+      <div class="flexed flexed-end" style="margin: 1rem 0">
+        <div class="search-input">
+          <label for="search-field" style="font-size: 13px">Search</label>
+          <input type="search" name="search-field" class="mgl-1" id="search-field" (input)="filterSalesControl($event.target.value)">
+        </div>
+        <div class="export-options mgl-2">
+          <button class="button button-tertiary rounded button-img">
+            <span>Add Customer</span>
+          </button>
+          <button class="button button-text button-img mgl-2">
+        <span>
+          <img src="assets/download.svg" alt="" width="10" style="filter: invert(0)">
+        </span>
+            <span>Print List</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="customer-list">
+      <div class="table-header flexed bold flexed-align-center smallest">
+        <span>#</span>
+        <span>Customer Name</span>
+        <span>Location</span>
+        <span>Telephone</span>
+        <span>Sale Records</span>
+      </div>
+      <div class="customer-list">
+        <div class="customer-record" *ngFor="let customer of customers">
+          <span>{{customer.id}}</span>
+          <span>{{customer.name}}</span>
+          <span>{{customer.location}}</span>
+          <span>{{customer.telephone}}</span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
